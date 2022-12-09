@@ -23,6 +23,9 @@ typedef enum {
 
 
 /* DYNAMIC ARRAY DATA TYPES */
+// This is only for debug purposes, you can pass DA_DATA_NA to constructor.
+// Ignoring it will only result in not being able to convert data type to string
+// in array print function.
 typedef enum {
 	DA_DATA_NA,
     DA_DATA_UCHAR,
@@ -41,21 +44,53 @@ typedef enum {
 
 /* DYNAMIC ARR */
 struct dynamicArray{
-    void *arrayPointer;
-    unsigned int dataTypeSize;
+    void *arrayPointer;         // Void pointer to array
+    unsigned int dataTypeSize;  // Size of data type
 
-    unsigned int size;
-    unsigned int maxSize;
+    unsigned int size;          // Number of objects in array
+    unsigned int maxSize;       // Number of max objects in array
 
-    DA_DATA_TYPE DATA_TYPE;
+    DA_DATA_TYPE DATA_TYPE;     // Data type
 
-    // Functions
+    // ---------------------------------------
+    // FUNCTIONS
+    // ---------------------------------------
+
+    // Creates new dynamic array
     struct dynamicArray (*createDA)(void*, size_t, size_t, DA_DATA_TYPE);
 
-    void (*voidPtr_to_str)(char *, struct dynamicArray *, size_t);
-    void (*throw_DA_error_abort)(char*);                        // Throws an error (debug)
-    void (*print_DA_info)(struct dynamicArray*, char*);         // Prints array info (debug)
+    // Deletes array
     void (*destroyDA)(struct dynamicArray*);
+
+    // Get pointer to object at given index, return NULL if incorrect index
+    void* (*get_DA_ptr_at)(struct dynamicArray*, unsigned int);
+
+    // Checks if array is empty
+    char (*is_DA_empty)(struct dynamicArray*);
+
+    // Appends array of the same type to the dynamic array
+    DA_ERR_CODE (*append_DA)(struct dynamicArray*, void*, unsigned int);
+
+    // Sets value of array at given index
+    DA_ERR_CODE (*set_DA_at)(struct dynamicArray*, void*, unsigned int);
+
+    // Increases maximum size of array
+    DA_ERR_CODE (*increase_DA_size)(struct dynamicArray*, unsigned int);
+
+    // Decreases maximum size of array
+    DA_ERR_CODE (*decrease_DA_size)(struct dynamicArray*, unsigned int);
+
+    // Resizes array to a given size
+    DA_ERR_CODE (*resize_DA)(struct dynamicArray*, unsigned int);
+
+    // Tries to convert array content into string
+    void (*DA_to_str)(char *, struct dynamicArray *, size_t);
+
+    // Throws error message
+    void (*throw_DA_error)(char*);
+
+    // Prints information regarding array
+    void (*print_DA_info)(struct dynamicArray*, char*);
 };
 
 extern const struct dynamicArray DynamicArray;

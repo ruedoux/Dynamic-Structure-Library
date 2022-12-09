@@ -4,7 +4,7 @@
 // DEBUG MANAGEMENT
 // ---------------------------------------
 
-void throw_CA_error_abort(char *msg)
+void throw_CA_error(char *msg)
 {
     printf("---------------------------------\n");
     printf("ERROR:\n");
@@ -31,7 +31,7 @@ CA_ERR_CODE increase_CA_size(struct charArray *arr, unsigned int addSize)
 {
     // +1 to size so i can put null at the end
     void* tmp = realloc(arr->arrayPointer,sizeof(char)*arr->size + sizeof(char)*addSize + 1);
-    if (tmp == NULL) { throw_CA_error_abort("Unable to realloc"); return CA_ERR_REALLOC; }
+    if (tmp == NULL) { throw_CA_error("Unable to realloc"); return CA_ERR_REALLOC; }
     
     arr->maxSize += addSize;
     arr->arrayPointer[arr->size+1] = '\0'; // Termination of array
@@ -48,7 +48,7 @@ CA_ERR_CODE decrease_CA_size(struct charArray *arr, unsigned int minusSize)
 
     // +1 to size so i can put null at the end
     void* tmp = realloc(arr->arrayPointer,sizeof(char)*arr->size - sizeof(char)*minusSize + 1);
-    if (tmp == NULL) { throw_CA_error_abort("Unable to realloc"); return CA_ERR_REALLOC; }
+    if (tmp == NULL) { throw_CA_error("Unable to realloc"); return CA_ERR_REALLOC; }
 
     arr->maxSize -= minusSize;
     if (arr->size > arr->maxSize){ arr->size = arr->maxSize; }
@@ -61,7 +61,7 @@ CA_ERR_CODE decrease_CA_size(struct charArray *arr, unsigned int minusSize)
 
 CA_ERR_CODE resize_CA(struct charArray *arr, unsigned int destSize)
 {
-    CA_ERR_CODE err_result;
+    CA_ERR_CODE err_result = CA_ERR_OK;
 
     if (destSize > arr->maxSize)
     {
@@ -98,7 +98,7 @@ CA_ERR_CODE set_CA_char(struct charArray *arr, char ch, unsigned int index)
         sprintf(content,"Tried to set index: %u, when max index is %u in charArray.",
                        index, arr->maxSize-1);
 
-        throw_CA_error_abort(content);
+        throw_CA_error(content);
         return CA_ERR_INDEX;
     }
 
@@ -161,7 +161,8 @@ char get_CA_char(struct charArray *arr, unsigned int index)
 		sprintf(content,"Tried to get index: %u, when max index is %u in charArray.",
 		               index, arr->maxSize-1);
 
-		throw_CA_error_abort(content);
+		throw_CA_error(content);
+        return -1;
 	}
 	return arr->arrayPointer[index];
 }
@@ -174,17 +175,6 @@ char is_CA_empty(struct charArray *arr)
     return isEmpty;
 }
 
-
-unsigned int get_CA_size(struct charArray *arr)
-{
-    return arr->size;
-}
-
-
-unsigned int get_CA_maxSize(struct charArray *arr)
-{
-    return arr->maxSize;
-}
 
 // ---------------------------------------
 // CONSTRUCTOR
@@ -221,14 +211,12 @@ const struct charArray CharArray = {
   .increase_CA_size = increase_CA_size,
   .set_CA_char = set_CA_char,
   .createCA = createCA,
-  .throw_CA_error_abort = throw_CA_error_abort,
+  .throw_CA_error = throw_CA_error,
   .append_CA = append_CA,
   .decrease_CA_size = decrease_CA_size,
   .print_CA_info = print_CA_info,
   .get_CA_char = get_CA_char,
   .is_CA_empty = is_CA_empty,
-  .get_CA_size = get_CA_size,
-  .get_CA_maxSize = get_CA_maxSize,
   .find_CA_str = find_CA_str,
   .resize_CA = resize_CA,
   .pop_CA_back = pop_CA_back,

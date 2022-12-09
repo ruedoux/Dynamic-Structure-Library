@@ -32,12 +32,6 @@ struct charArray{
     // Deletes array
     void (*destroyCA)(struct charArray *);
 
-    // Gets array size
-    unsigned int (*get_CA_size)(struct charArray*);
-
-    // Gets array maximum size
-    unsigned int (*get_CA_maxSize)(struct charArray*);
-
     // Finds string in array
     int (*find_CA_str)(struct charArray*, char*);
 
@@ -66,7 +60,7 @@ struct charArray{
     CA_ERR_CODE (*decrease_CA_size)(struct charArray*, unsigned int);
 
     // Throws an error (debug)
-    void (*throw_CA_error_abort)(char*);
+    void (*throw_CA_error)(char*);
 
     // Prints array info (debug)
     void (*print_CA_info)(struct charArray*, char*);
