@@ -1,7 +1,7 @@
 #include "src/charArray.h"
 #include "src/dynamicArray.h"
 
-// Multiple functionalities of the char array being shown as example
+
 void test_CA()
 {
     struct charArray arr = CharArray.createCA("");
@@ -38,7 +38,7 @@ void test_CA()
 
 }
 
-//printf("%c\n",*(char*)DynamicArray.get_DA_ptr_at(&chArr,1));
+
 void test_DA_char()
 {
     char chTest[] = "Test array of chars";
@@ -99,8 +99,9 @@ void test_DA_int()
 
 int main()
 {
-    //test_CA();
-    //test_DA_char();
-    test_DA_int();
+    // Uncomment any function you want to test
+    //test_CA();        // Char array tests (String)
+    //test_DA_char();   // Dynamic array tests (char)
+    //test_DA_int();    // Synamic array tests (int)
     return 0;
 }
