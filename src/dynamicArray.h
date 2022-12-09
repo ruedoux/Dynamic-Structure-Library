@@ -14,7 +14,7 @@
 
 /* DYNAMIC ARRAY ERROR CODES */
 typedef enum {
-	DA_ERR_OK      =  0,  // Success
+    DA_ERR_OK      =  0,  // Success
     DA_ERR_ERR     = -1,  // Unspecified error
     DA_ERR_REALLOC = -2,  // Realloc error
     DA_ERR_INDEX   = -3,  // index error
@@ -27,7 +27,7 @@ typedef enum {
 // Ignoring it will only result in not being able to convert data type to string
 // in array print function.
 typedef enum {
-	DA_DATA_NA,
+    DA_DATA_NA,
     DA_DATA_UCHAR,
     DA_DATA_CHAR,
     DA_DATA_USHORT,

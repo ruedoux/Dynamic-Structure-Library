@@ -166,16 +166,16 @@ DA_ERR_CODE append_DA(struct dynamicArray *arr, void* data, unsigned int dataSiz
 
 void* get_DA_ptr_at(struct dynamicArray *arr, unsigned int index)
 {
-	if (index >= arr->maxSize)
-	{
-		char content[255];
-		sprintf(content,"Tried to get index: %u, when max index is %u in dynamicArray.",
-		               index, arr->maxSize-1);
+    if (index >= arr->maxSize)
+    {
+        char content[255];
+        sprintf(content,"Tried to get index: %u, when max index is %u in dynamicArray.",
+                index, arr->maxSize-1);
 
-		throw_DA_error(content);
+        throw_DA_error(content);
         return NULL;
-	}
-	return ARR_PTR_AT(arr->arrayPointer, arr->dataTypeSize, index);
+    }
+    return ARR_PTR_AT(arr->arrayPointer, arr->dataTypeSize, index);
 }
 
 

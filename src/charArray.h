@@ -8,7 +8,7 @@
 
 /* CHAR ARRAY ERROR CODES */
 typedef enum {
-	CA_ERR_OK = 0,       // Success
+    CA_ERR_OK = 0,       // Success
     CA_ERR_ERR = -1,     // Unspecified error
     CA_ERR_REALLOC = -2, // Realloc error
     CA_ERR_INDEX = -3,   // index error

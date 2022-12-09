@@ -155,16 +155,16 @@ int find_CA_str(struct charArray *arr, char *str)
 
 char get_CA_char(struct charArray *arr, unsigned int index)
 {
-	if (index >= arr->maxSize)
-	{
-		char content[255];
-		sprintf(content,"Tried to get index: %u, when max index is %u in charArray.",
-		               index, arr->maxSize-1);
+    if (index >= arr->maxSize)
+    {
+        char content[255];
+        sprintf(content,"Tried to get index: %u, when max index is %u in charArray.",
+                index, arr->maxSize-1);
 
-		throw_CA_error(content);
+        throw_CA_error(content);
         return -1;
-	}
-	return arr->arrayPointer[index];
+    }
+    return arr->arrayPointer[index];
 }
 
 
