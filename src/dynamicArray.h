@@ -11,6 +11,12 @@
 // Returns pointer to i element of the dynamic array
 #define ARR_PTR_AT(ptr, size, i) ( (void *)((char *)ptr + i * size) )
 
+# define BOLD				"\033[1m"
+# define RED				"\033[31m"
+# define GREEN				"\033[32m"
+# define ANSI_RESET			"\033[0m"
+//  Example : DEBUG("ERROR") will print : [filename: line_no] ERROR \n
+# define DEBUG(msg,...) fprintf(stderr, BOLD GREEN"[LOG](%s:%d)" RED msg ANSI_RESET"\n" , __FILE__, __LINE__, ##__VA_ARGS__)
 
 /* DYNAMIC ARRAY ERROR CODES */
 typedef enum {
