@@ -1,19 +1,10 @@
-#include "charArray.h"
+#include "CharArray.h"
 
 // ---------------------------------------
 // DEBUG MANAGEMENT
 // ---------------------------------------
 
-void throw_CA_error(char *msg)
-{
-    printf("---------------------------------\n");
-    printf("ERROR:\n");
-    printf("%s\n",msg);
-    printf("---------------------------------\n");
-}
-
-
-void print_CA_info(struct charArray *arr, char *additionalInfo)
+void print_CA_info( CharArray *arr, char *additionalInfo)
 {
     printf("---------------------------------\n");
     printf("CHAR ARRAY INFO:\n");
@@ -27,20 +18,20 @@ void print_CA_info(struct charArray *arr, char *additionalInfo)
 // SIZE MANAGEMENT
 // ---------------------------------------
 
-CA_ERR_CODE increase_CA_size(struct charArray *arr, unsigned int addSize)
+ARR_ERR_CODE increase_CA_size( CharArray *arr, unsigned int addSize)
 {
     // +1 to size so i can put null at the end
     void* tmp = realloc(arr->arrayPointer,sizeof(char)*arr->size + sizeof(char)*addSize + 1);
-    if (tmp == NULL) { throw_CA_error("Unable to realloc"); return CA_ERR_REALLOC; }
+    if (tmp == NULL) { ERROR("Unable to realloc."); return ARR_ERR_REALLOC; }
     
     arr->maxSize += addSize;
     arr->arrayPointer[arr->size+1] = '\0'; // Termination of array
 
-    return CA_ERR_OK;
+    return ARR_ERR_OK;
 }
 
 
-CA_ERR_CODE decrease_CA_size(struct charArray *arr, unsigned int minusSize)
+ARR_ERR_CODE decrease_CA_size( CharArray *arr, unsigned int minusSize)
 {
     // If decrease more than array size just make array size 0
     int sizeTest = arr->maxSize - minusSize;
@@ -48,20 +39,20 @@ CA_ERR_CODE decrease_CA_size(struct charArray *arr, unsigned int minusSize)
 
     // +1 to size so i can put null at the end
     void* tmp = realloc(arr->arrayPointer,sizeof(char)*arr->size - sizeof(char)*minusSize + 1);
-    if (tmp == NULL) { throw_CA_error("Unable to realloc"); return CA_ERR_REALLOC; }
+    if (tmp == NULL) { ERROR("Unable to realloc"); return ARR_ERR_REALLOC; }
 
     arr->maxSize -= minusSize;
     if (arr->size > arr->maxSize){ arr->size = arr->maxSize; }
 
     arr->arrayPointer[arr->size] = '\0'; // Termination of array
 
-    return CA_ERR_OK;
+    return ARR_ERR_OK;
 }
 
 
-CA_ERR_CODE resize_CA(struct charArray *arr, unsigned int destSize)
+ARR_ERR_CODE resize_CA( CharArray *arr, unsigned int destSize)
 {
-    CA_ERR_CODE err_result = CA_ERR_OK;
+    ARR_ERR_CODE err_result = ARR_ERR_OK;
 
     if (destSize > arr->maxSize)
     {
@@ -82,7 +73,7 @@ CA_ERR_CODE resize_CA(struct charArray *arr, unsigned int destSize)
 // ---------------------------------------
 
 /* Pops last char from array */
-char pop_CA_back(struct charArray *arr)
+char pop_CA_back( CharArray *arr)
 {
     char ch = arr->arrayPointer[arr->size - 1];
     decrease_CA_size(arr, 1);
@@ -90,28 +81,24 @@ char pop_CA_back(struct charArray *arr)
 }
 
 
-CA_ERR_CODE set_CA_char(struct charArray *arr, char ch, unsigned int index)
+ARR_ERR_CODE set_CA_char( CharArray *arr, char ch, unsigned int index)
 {
     if (index >= arr->maxSize)
     {
-        char content[255];
-        sprintf(content,"Tried to set index: %u, when max index is %u in charArray.",
-                       index, arr->maxSize-1);
-
-        throw_CA_error(content);
-        return CA_ERR_INDEX;
+        ERROR("Tried to set index: %u, when max index is %u in CharArray.", index, arr->maxSize-1);
+        return ARR_ERR_INDEX;
     }
 
     arr->arrayPointer[index] = ch;
     if (index > arr->size-1){ arr->size = index + 1; }
 
-    return CA_ERR_OK;
+    return ARR_ERR_OK;
 }
 
 
-CA_ERR_CODE append_CA(struct charArray *arr, char *str)
+ARR_ERR_CODE append_CA( CharArray *arr, char *str)
 {
-    CA_ERR_CODE err_result = CA_ERR_OK;
+    ARR_ERR_CODE err_result = ARR_ERR_OK;
 
     unsigned int strSize = strlen(str);
     unsigned int lenCombined = strSize + arr->size;
@@ -131,7 +118,7 @@ CA_ERR_CODE append_CA(struct charArray *arr, char *str)
 // GET FROM ARRAY
 // ---------------------------------------
 
-int find_CA_str(struct charArray *arr, char *str)
+int find_CA_str( CharArray *arr, char *str)
 {
     int strSize = strlen(str);
     int matchingIndex = 0;
@@ -153,22 +140,18 @@ int find_CA_str(struct charArray *arr, char *str)
 }
 
 
-char get_CA_char(struct charArray *arr, unsigned int index)
+char get_CA_char( CharArray *arr, unsigned int index)
 {
     if (index >= arr->maxSize)
     {
-        char content[255];
-        sprintf(content,"Tried to get index: %u, when max index is %u in charArray.",
-                index, arr->maxSize-1);
-
-        throw_CA_error(content);
+        ERROR("Tried to get index: %u, when max index is %u in CharArray.", index, arr->maxSize-1);
         return -1;
     }
     return arr->arrayPointer[index];
 }
 
 
-char is_CA_empty(struct charArray *arr)
+char is_CA_empty( CharArray *arr)
 {
     char isEmpty = 1;
     if (arr->size > 0) { isEmpty = 0; }
@@ -180,9 +163,9 @@ char is_CA_empty(struct charArray *arr)
 // CONSTRUCTOR
 // ---------------------------------------
 
-struct charArray createCA(char *str)
+ CharArray createCA(char *str)
 {
-    struct charArray arr;
+    CharArray arr;
     unsigned int maxSize = strlen(str);
 
     arr.size = maxSize;
@@ -194,31 +177,10 @@ struct charArray createCA(char *str)
 }
 
 // ---------------------------------------
-// Destructor
+// DESTRUCTOR
 // ---------------------------------------
 
-void destroyCA(struct charArray *arr)
+void destroyCA( CharArray *arr)
 {
     free(arr->arrayPointer);
 }
-
-// ---------------------------------------
-// ARRAY INTERFACE
-// ---------------------------------------
-
-/* Library interface */
-const struct charArray CharArray = {
-  .increase_CA_size = increase_CA_size,
-  .set_CA_char = set_CA_char,
-  .createCA = createCA,
-  .throw_CA_error = throw_CA_error,
-  .append_CA = append_CA,
-  .decrease_CA_size = decrease_CA_size,
-  .print_CA_info = print_CA_info,
-  .get_CA_char = get_CA_char,
-  .is_CA_empty = is_CA_empty,
-  .find_CA_str = find_CA_str,
-  .resize_CA = resize_CA,
-  .pop_CA_back = pop_CA_back,
-  .destroyCA = destroyCA
-};

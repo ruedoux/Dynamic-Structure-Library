@@ -1,35 +1,26 @@
-#include "dynamicArray.h"
+#include "DynamicArray.h"
 
 // ---------------------------------------
 // DEBUG MANAGEMENT
 // ---------------------------------------
 
-void throw_DA_error(char *msg)
+void print_DA_info(DynamicArray *dArr, char *additionalInfo)
 {
-    printf("---------------------------------\n");
-    printf("ERROR:\n");
-    printf("%s\n",msg);
-    printf("---------------------------------\n");
-}
-
-
-void print_DA_info(struct dynamicArray *dArr, char *additionalInfo)
-{
-    struct charArray strArr = CharArray.createCA(""); // utilize char array
+    CharArray strArr = createCA(""); // utilize char array
 
     if (dArr->DATA_TYPE != DA_DATA_NA)
     {
         char buffor[255];
         for (size_t i=0; i<dArr->size; i++)
         {
-            DynamicArray.DA_to_str(buffor, dArr, i);
-            CharArray.append_CA(&strArr, buffor);
-            CharArray.append_CA(&strArr, ", ");
+            DA_to_str(buffor, dArr, i);
+            append_CA(&strArr, buffor);
+            append_CA(&strArr, ", ");
         }
-        CharArray.pop_CA_back(&strArr); // pop space
-        CharArray.pop_CA_back(&strArr); // pop comma
+        pop_CA_back(&strArr); // pop space
+        pop_CA_back(&strArr); // pop comma
 
-    } else {CharArray.append_CA(&strArr,"Unknown data type, Unable to convert to text.");}
+    } else {append_CA(&strArr,"Unknown data type, Unable to convert to text.");}
 
     printf("---------------------------------\n");
     printf("DYNAMIC ARRAY INFO:\n");
@@ -38,14 +29,14 @@ void print_DA_info(struct dynamicArray *dArr, char *additionalInfo)
     if (strlen(additionalInfo) != 0) { printf("Additional info: "); printf("%s",additionalInfo); }
     printf("---------------------------------\n");
 
-    CharArray.destroyCA(&strArr);
+    destroyCA(&strArr);
 }
 
 // ---------------------------------------
 // STRING CONVERSION
 // ---------------------------------------
 
-void DA_to_str(char *buffor, struct dynamicArray *arr, size_t index)
+void DA_to_str(char *buffor, DynamicArray *arr, size_t index)
 {
     sprintf(buffor,"%s","err");
 
@@ -67,35 +58,35 @@ void DA_to_str(char *buffor, struct dynamicArray *arr, size_t index)
 // SIZE MANAGEMENT
 // ---------------------------------------
 
-DA_ERR_CODE increase_DA_size(struct dynamicArray *arr, unsigned int addSize)
+ARR_ERR_CODE increase_DA_size(DynamicArray *arr, unsigned int addSize)
 {
     void* tmp = realloc(arr->arrayPointer, arr->dataTypeSize*arr->size + arr->dataTypeSize*addSize);
-    if (tmp == NULL) { throw_DA_error("Unable to realloc"); return DA_ERR_REALLOC; }
+    if (tmp == NULL) { ERROR("Unable to realloc."); return ARR_ERR_REALLOC; }
 
     arr->maxSize += addSize;
-    return DA_ERR_OK;
+    return ARR_ERR_OK;
 }
 
 
-DA_ERR_CODE decrease_DA_size(struct dynamicArray *arr, unsigned int minusSize)
+ARR_ERR_CODE decrease_DA_size(DynamicArray *arr, unsigned int minusSize)
 {
     // If decrease more than array size just make array size 0
     int sizeTest = arr->maxSize - minusSize;
     if( sizeTest < 0 ) { minusSize = arr->maxSize; }
 
     void* tmp = realloc(arr->arrayPointer, arr->dataTypeSize*arr->size - arr->dataTypeSize*minusSize);
-    if (tmp == NULL) { throw_DA_error("Unable to realloc"); return DA_ERR_REALLOC; }
+    if (tmp == NULL) { ERROR("Unable to realloc."); return ARR_ERR_REALLOC; }
 
     arr->maxSize -= minusSize;
     if (arr->size > arr->maxSize){ arr->size = arr->maxSize; }
 
-    return DA_ERR_OK;
+    return ARR_ERR_OK;
 }
 
 
-DA_ERR_CODE resize_DA(struct dynamicArray *arr, unsigned int destSize)
+ARR_ERR_CODE resize_DA(DynamicArray *arr, unsigned int destSize)
 {
-    DA_ERR_CODE err_result = DA_ERR_OK;
+    ARR_ERR_CODE err_result = ARR_ERR_OK;
 
     if (destSize > arr->maxSize)
     {
@@ -115,30 +106,26 @@ DA_ERR_CODE resize_DA(struct dynamicArray *arr, unsigned int destSize)
 // CHANGE ARRAY MANAGEMENT
 // ---------------------------------------
 
-DA_ERR_CODE set_DA_at(struct dynamicArray *arr, void* data, unsigned int index)
+ARR_ERR_CODE set_DA_at(DynamicArray *arr, void* data, unsigned int index)
 {
     printf("index: %d\n",index);
     if (index >= arr->maxSize)
     {
-        char content[255];
-        sprintf(content,"Tried to set index: %u, when max index is %u in dynamicArray.",
-                       index, arr->maxSize-1);
-
-        throw_DA_error(content);
-        return DA_ERR_INDEX;
+        ERROR("Tried to set index: %u, when max index is %u in DynamicArray.", index, arr->maxSize-1);
+        return ARR_ERR_INDEX;
     }
 
     memcpy( ARR_PTR_AT(arr->arrayPointer, arr->dataTypeSize, index),
             data, arr->dataTypeSize);
     if (index > arr->size-1){ arr->size = index; }
 
-    return DA_ERR_OK;
+    return ARR_ERR_OK;
 }
 
 
-DA_ERR_CODE append_DA(struct dynamicArray *arr, void* data, unsigned int dataSize)
+ARR_ERR_CODE append_DA(DynamicArray *arr, void* data, unsigned int dataSize)
 {
-    DA_ERR_CODE err_result = DA_ERR_OK;
+    ARR_ERR_CODE err_result = ARR_ERR_OK;
 
     unsigned int lenCombined = dataSize + arr->size;
     if (lenCombined > arr->maxSize)
@@ -164,22 +151,18 @@ DA_ERR_CODE append_DA(struct dynamicArray *arr, void* data, unsigned int dataSiz
 // GET FROM ARRAY
 // ---------------------------------------
 
-void* get_DA_ptr_at(struct dynamicArray *arr, unsigned int index)
+void* get_DA_ptr_at(DynamicArray *arr, unsigned int index)
 {
     if (index >= arr->maxSize)
     {
-        char content[255];
-        sprintf(content,"Tried to get index: %u, when max index is %u in dynamicArray.",
-                index, arr->maxSize-1);
-
-        throw_DA_error(content);
+        ERROR("Tried to get index: %u, when max index is %u in DynamicArray.", index, arr->maxSize-1);
         return NULL;
     }
     return ARR_PTR_AT(arr->arrayPointer, arr->dataTypeSize, index);
 }
 
 
-char is_DA_empty(struct dynamicArray *arr)
+char is_DA_empty(DynamicArray *arr)
 {
     char isEmpty = 1;
     if (arr->size > 0) { isEmpty = 0; }
@@ -190,11 +173,11 @@ char is_DA_empty(struct dynamicArray *arr)
 // CONSTRUCTOR
 // ---------------------------------------
 
-/* Constructor for dynamicArray */
-struct dynamicArray createDA(void *data, size_t size, size_t dataTypeSize, DA_DATA_TYPE DATA_TYPE)
+/* Constructor for DynamicArray */
+DynamicArray createDA(void *data, size_t size, size_t dataTypeSize, DA_DATA_TYPE DATA_TYPE)
 {
-    if (size < 1){ throw_DA_error("Tried to create empty dynamic Array!"); }
-    struct dynamicArray arr;
+    if (size < 1){ ERROR("Tried to create empty dynamic Array!"); }
+    DynamicArray arr;
 
     // Assign array values
     arr.size = size;
@@ -217,27 +200,7 @@ struct dynamicArray createDA(void *data, size_t size, size_t dataTypeSize, DA_DA
 // DESTRUCTOR
 // ---------------------------------------
 
-void destroyDA(struct dynamicArray *arr)
+void destroyDA(DynamicArray *arr)
 {
     free(arr->arrayPointer);
 }
-
-// ---------------------------------------
-// ARRAY INTERFACE
-// ---------------------------------------
-
-/* Library interface */
-const struct dynamicArray DynamicArray = {
-  .createDA = createDA,
-  .throw_DA_error = throw_DA_error,
-  .print_DA_info = print_DA_info,
-  .destroyDA = destroyDA,
-  .DA_to_str = DA_to_str,
-  .resize_DA = resize_DA,
-  .decrease_DA_size = decrease_DA_size,
-  .increase_DA_size = increase_DA_size,
-  .get_DA_ptr_at = get_DA_ptr_at,
-  .is_DA_empty = is_DA_empty,
-  .set_DA_at = set_DA_at,
-  .append_DA = append_DA
-};

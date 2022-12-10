@@ -2,30 +2,8 @@
 #ifndef DYNAMICARR_C
 #define DYNAMICARR_C
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
+#include "ArrayMaster.h"
 #include "charArray.h"
-
-// Returns pointer to i element of the dynamic array
-#define ARR_PTR_AT(ptr, size, i) ( (void *)((char *)ptr + i * size) )
-
-# define BOLD				"\033[1m"
-# define RED				"\033[31m"
-# define GREEN				"\033[32m"
-# define ANSI_RESET			"\033[0m"
-//  Example : DEBUG("ERROR") will print : [filename: line_no] ERROR \n
-# define DEBUG(msg,...) fprintf(stderr, BOLD GREEN"[LOG](%s:%d)" RED msg ANSI_RESET"\n" , __FILE__, __LINE__, ##__VA_ARGS__)
-
-/* DYNAMIC ARRAY ERROR CODES */
-typedef enum {
-    DA_ERR_OK      =  0,  // Success
-    DA_ERR_ERR     = -1,  // Unspecified error
-    DA_ERR_REALLOC = -2,  // Realloc error
-    DA_ERR_INDEX   = -3,  // index error
-
-} DA_ERR_CODE;
 
 
 /* DYNAMIC ARRAY DATA TYPES */
@@ -49,7 +27,7 @@ typedef enum {
 
 
 /* DYNAMIC ARR */
-struct dynamicArray{
+typedef struct{
     void *arrayPointer;         // Void pointer to array
     unsigned int dataTypeSize;  // Size of data type
 
@@ -57,48 +35,44 @@ struct dynamicArray{
     unsigned int maxSize;       // Number of max objects in array
 
     DA_DATA_TYPE DATA_TYPE;     // Data type
+} DynamicArray;
 
-    // ---------------------------------------
-    // FUNCTIONS
-    // ---------------------------------------
+// ---------------------------------------
+// FUNCTIONS
+// ---------------------------------------
 
-    // Creates new dynamic array
-    struct dynamicArray (*createDA)(void*, size_t, size_t, DA_DATA_TYPE);
+// Creates new dynamic array
+DynamicArray createDA(void*, size_t, size_t, DA_DATA_TYPE);
 
-    // Deletes array
-    void (*destroyDA)(struct dynamicArray*);
+// Deletes array
+void destroyDA(DynamicArray*);
 
-    // Get pointer to object at given index, return NULL if incorrect index
-    void* (*get_DA_ptr_at)(struct dynamicArray*, unsigned int);
+// Get pointer to object at given index, return NULL if incorrect index
+void* get_DA_ptr_at(DynamicArray*, unsigned int);
 
-    // Checks if array is empty
-    char (*is_DA_empty)(struct dynamicArray*);
+// Checks if array is empty
+char is_DA_empty(DynamicArray*);
 
-    // Appends array of the same type to the dynamic array
-    DA_ERR_CODE (*append_DA)(struct dynamicArray*, void*, unsigned int);
+// Appends array of the same type to the dynamic array
+ARR_ERR_CODE append_DA(DynamicArray*, void*, unsigned int);
 
-    // Sets value of array at given index
-    DA_ERR_CODE (*set_DA_at)(struct dynamicArray*, void*, unsigned int);
+// Sets value of array at given index
+ARR_ERR_CODE set_DA_at(DynamicArray*, void*, unsigned int);
 
-    // Increases maximum size of array
-    DA_ERR_CODE (*increase_DA_size)(struct dynamicArray*, unsigned int);
+// Increases maximum size of array
+ARR_ERR_CODE increase_DA_size(DynamicArray*, unsigned int);
 
-    // Decreases maximum size of array
-    DA_ERR_CODE (*decrease_DA_size)(struct dynamicArray*, unsigned int);
+// Decreases maximum size of array
+ARR_ERR_CODE decrease_DA_size(DynamicArray*, unsigned int);
 
-    // Resizes array to a given size
-    DA_ERR_CODE (*resize_DA)(struct dynamicArray*, unsigned int);
+// Resizes array to a given size
+ARR_ERR_CODE resize_DA(DynamicArray*, unsigned int);
 
-    // Tries to convert array content into string
-    void (*DA_to_str)(char *, struct dynamicArray *, size_t);
+// Tries to convert array content into string
+void DA_to_str(char *, DynamicArray *, size_t);
 
-    // Throws error message
-    void (*throw_DA_error)(char*);
+// Prints information regarding array
+void print_DA_info(DynamicArray*, char*);
 
-    // Prints information regarding array
-    void (*print_DA_info)(struct dynamicArray*, char*);
-};
-
-extern const struct dynamicArray DynamicArray;
 
 #endif
