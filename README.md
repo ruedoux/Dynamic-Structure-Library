@@ -9,14 +9,14 @@ Example Use
 -----------
 Char array (String):
 ```
-CharArray arr = createCA("");
+CharArray arr = create_CA("");
 append_CA(&arr, "append this text");
 ```
 
 Dynamic array (any data type, in example provided it is int):
 ```
 int intTest[] = {1,2,3,4,5,6};
-DynamicArray intArr = createDA(intTest, 6, sizeof *intTest, DA_DATA_INT);
+DynamicArray intArr = create_DA(intTest, 6, sizeof *intTest, DA_DATA_INT);
 
 int values[] = {8,9};
 append_DA(&intArr, values, 2);
