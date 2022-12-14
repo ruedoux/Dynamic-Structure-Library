@@ -6,7 +6,7 @@
 
 void print_DA_info(DynamicArray *dArr, char *additionalInfo)
 {
-    CharArray strArr = createCA(""); // utilize char array
+    CharArray strArr = create_CA(""); // utilize char array
 
     if (dArr->DATA_TYPE != DA_DATA_NA)
     {
@@ -29,7 +29,7 @@ void print_DA_info(DynamicArray *dArr, char *additionalInfo)
     if (strlen(additionalInfo) != 0) { printf("Additional info: "); printf("%s",additionalInfo); }
     printf("---------------------------------\n");
 
-    destroyCA(&strArr);
+    destroy_CA(&strArr);
 }
 
 // ---------------------------------------
@@ -174,7 +174,7 @@ char is_DA_empty(DynamicArray *arr)
 // ---------------------------------------
 
 /* Constructor for DynamicArray */
-DynamicArray createDA(void *data, size_t size, size_t dataTypeSize, DA_DATA_TYPE DATA_TYPE)
+DynamicArray create_DA(void *data, size_t size, size_t dataTypeSize, DA_DATA_TYPE DATA_TYPE)
 {
     if (size < 1){ ERROR("Tried to create empty dynamic Array!"); }
     DynamicArray arr;
@@ -200,7 +200,7 @@ DynamicArray createDA(void *data, size_t size, size_t dataTypeSize, DA_DATA_TYPE
 // DESTRUCTOR
 // ---------------------------------------
 
-void destroyDA(DynamicArray *arr)
+void destroy_DA(DynamicArray *arr)
 {
     free(arr->arrayPointer);
 }

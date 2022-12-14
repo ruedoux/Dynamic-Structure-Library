@@ -163,7 +163,7 @@ char is_CA_empty( CharArray *arr)
 // CONSTRUCTOR
 // ---------------------------------------
 
- CharArray createCA(char *str)
+ CharArray create_CA(char *str)
 {
     CharArray arr;
     unsigned int maxSize = strlen(str);
@@ -180,7 +180,7 @@ char is_CA_empty( CharArray *arr)
 // DESTRUCTOR
 // ---------------------------------------
 
-void destroyCA( CharArray *arr)
+void destroy_CA( CharArray *arr)
 {
     free(arr->arrayPointer);
 }

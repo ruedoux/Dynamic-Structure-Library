@@ -42,10 +42,10 @@ typedef struct{
 // ---------------------------------------
 
 // Creates new dynamic array
-DynamicArray createDA(void*, size_t, size_t, DA_DATA_TYPE);
+DynamicArray create_DA(void*, size_t, size_t, DA_DATA_TYPE);
 
 // Deletes array
-void destroyDA(DynamicArray*);
+void destroy_DA(DynamicArray*);
 
 // Get pointer to object at given index, return NULL if incorrect index
 void* get_DA_ptr_at(DynamicArray*, unsigned int);

@@ -1,10 +1,11 @@
 #include "src/charArray.h"
 #include "src/dynamicArray.h"
+#include "src/List.h"
 
 
 void test_CA()
 {
-    CharArray arr = createCA("");
+    CharArray arr = create_CA("");
     print_CA_info(&arr,"Creation of char array (String).\n");
 
     // START------------------------------------
@@ -34,14 +35,14 @@ void test_CA()
     print_CA_info(&arr,contentT);
     // END--------------------------------------
 
-    destroyCA(&arr);
+    destroy_CA(&arr);
 }
 
 
 void test_DA_char()
 {
     char chTest[] = "Test array of chars";
-    DynamicArray chArr = createDA(chTest, strlen(chTest), sizeof *chTest, DA_DATA_CHAR);
+    DynamicArray chArr = create_DA(chTest, strlen(chTest), sizeof *chTest, DA_DATA_CHAR);
     print_DA_info(&chArr,"Creating dynamic array.\n");
 
     // START------------------------------------
@@ -65,14 +66,14 @@ void test_DA_char()
     print_DA_info(&chArr,content);
     // END--------------------------------------
 
-    destroyDA(&chArr);
+    destroy_DA(&chArr);
 }
 
 
 void test_DA_int()
 {
     int intTest[] = {1,2,3,4,5,6};
-    DynamicArray intArr = createDA(intTest, 6, sizeof *intTest, DA_DATA_INT);
+    DynamicArray intArr = create_DA(intTest, 6, sizeof *intTest, DA_DATA_INT);
     print_DA_info(&intArr,"Creation of dynamic array.\n");
 
     // START------------------------------------
@@ -92,7 +93,20 @@ void test_DA_int()
     print_DA_info(&intArr,"Append {8,9} result.\n");
     // END--------------------------------------
 
-    destroyDA(&intArr);
+    destroy_DA(&intArr);
+}
+
+
+void test_List()
+{
+    List list = create_list();
+
+    int val = 156;
+    list_append(&list, &val, sizeof(int), "int");
+
+    print_list_info(&list, "");
+    print_listElement_info(&list, 0, "");
+
 }
 
 
@@ -101,6 +115,7 @@ int main()
     // Uncomment any function you want to test
     //test_CA();        // Char array tests (String)
     //test_DA_char();   // Dynamic array tests (char)
-    test_DA_int();    // Synamic array tests (int)
+    //test_DA_int();    // Synamic array tests (int)
+    test_List();
     return 0;
 }
