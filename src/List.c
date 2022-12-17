@@ -111,6 +111,7 @@ ARR_ERR_CODE resize_list(List* list, size_t destSize)
 // ---------------------------------------
 // CHANGE LIST MANAGEMENT
 // ---------------------------------------
+
 ListElement* create_Element(void* data, size_t dataSize, char* ID)
 {
     // Create element
