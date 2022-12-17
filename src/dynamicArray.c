@@ -1,4 +1,4 @@
-#include "DynamicArray.h"
+#include "dynamicArray.h"
 
 // ---------------------------------------
 // DEBUG MANAGEMENT
