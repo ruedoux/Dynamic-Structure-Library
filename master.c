@@ -35,6 +35,11 @@ void test_CA()
     print_CA_info(&arr,contentT);
     // END--------------------------------------
 
+    // START------------------------------------
+    decrease_CA_size(&arr, 999);
+    print_CA_info(&arr,"Decrease size by 999 result.\n");
+    // END--------------------------------------
+
     destroy_CA(&arr);
 }
 
@@ -102,11 +107,20 @@ void test_List()
     List list = create_list();
 
     int val = 156;
-    list_append(&list, &val, sizeof(int), "int");
+
+    for (int i=0;i<2;i++) { list_append(&list, &val, sizeof(int), "int"); }
 
     print_list_info(&list, "");
-    print_listElement_info(&list, 0, "");
 
+    resize_list(&list, 10);
+    print_list_info(&list, "");
+
+    list_append(&list, "abc", 3, "str");
+    list_append(&list, &val, sizeof(int), "int");
+    list_append(&list, "a", 1, "str");
+    list_append(&list, "a", 1, "str");
+
+    print_list_info(&list, "");
 }
 
 
@@ -115,7 +129,7 @@ int main()
     // Uncomment any function you want to test
     //test_CA();        // Char array tests (String)
     //test_DA_char();   // Dynamic array tests (char)
-    //test_DA_int();    // Synamic array tests (int)
-    test_List();
+    //test_DA_int();    // Dynamic array tests (int)
+    test_List();      // List tests
     return 0;
 }

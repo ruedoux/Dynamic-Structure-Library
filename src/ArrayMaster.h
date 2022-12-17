@@ -26,7 +26,10 @@ typedef enum {
     ARR_ERR_OK      =  0,  // Success
     ARR_ERR_ERR     = -1,  // Unspecified error
     ARR_ERR_REALLOC = -2,  // Realloc error
-    ARR_ERR_INDEX   = -3,  // index error
+    ARR_ERR_MALLOC  = -3,  // Malloc error
+    ARR_ERR_CALLOC  = -4,  // Calloc error
+    ARR_ERR_INDEX   = -5,  // Index error
+    ARR_ERR_OVER    = -6,  // Overflow error
 
 } ARR_ERR_CODE;
 
@@ -40,5 +43,13 @@ typedef enum {
 # define DEBUG(msg,...) fprintf(stderr, BOLD BLUE"[DEBUG](%s:%d) " ANSI_RESET BOLD msg ANSI_RESET"\n" , __FILE__, __LINE__, ##__VA_ARGS__)
 //  Example : ERROR("ERROR") will print : [filename: line_no] ERROR \n
 # define ERROR(msg,...) fprintf(stderr, BOLD RED"[ERROR](%s:%d) " ANSI_RESET BOLD msg ANSI_RESET"\n" , __FILE__, __LINE__, ##__VA_ARGS__)
+
+// ---------------------------------------
+// FUNCTIONS
+// ---------------------------------------
+
+int size_t_will_overflow_minus(size_t, size_t);
+
+int size_t_will_overflow_add(size_t, size_t);
 
 #endif

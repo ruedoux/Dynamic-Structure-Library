@@ -20,11 +20,11 @@ void print_DA_info(DynamicArray *dArr, char *additionalInfo)
         pop_CA_back(&strArr); // pop space
         pop_CA_back(&strArr); // pop comma
 
-    } else {append_CA(&strArr,"Unknown data type, Unable to convert to text.");}
+    } else {append_CA(&strArr, "Unknown data type, Unable to convert to text.");}
 
     printf("---------------------------------\n");
     printf("DYNAMIC ARRAY INFO:\n");
-    printf("size: %d, maxSize: %d, dataTypeSize: %d\n", dArr->size, dArr->maxSize, dArr->dataTypeSize);
+    printf("size: %Iu, maxSize: %Iu, dataTypeSize: %Iu\n", dArr->size, dArr->maxSize, dArr->dataTypeSize);
     printf("Content: %s\n", strArr.arrayPointer);
     if (strlen(additionalInfo) != 0) { printf("Additional info: "); printf("%s",additionalInfo); }
     printf("---------------------------------\n");
@@ -58,9 +58,12 @@ void DA_to_str(char *buffor, DynamicArray *arr, size_t index)
 // SIZE MANAGEMENT
 // ---------------------------------------
 
-ARR_ERR_CODE increase_DA_size(DynamicArray *arr, unsigned int addSize)
+ARR_ERR_CODE increase_DA_size(DynamicArray *arr, size_t addSize)
 {
-    void* tmp = realloc(arr->arrayPointer, arr->dataTypeSize*arr->size + arr->dataTypeSize*addSize);
+    if (size_t_will_overflow_add(arr->maxSize, addSize)) { DEBUG("Size overflow."); return ARR_ERR_OVER;}
+    size_t increaseSize = arr->maxSize + addSize;
+
+    void* tmp = realloc(arr->arrayPointer, arr->dataTypeSize*increaseSize);
     if (tmp == NULL) { ERROR("Unable to realloc."); return ARR_ERR_REALLOC; }
 
     arr->maxSize += addSize;
@@ -68,13 +71,13 @@ ARR_ERR_CODE increase_DA_size(DynamicArray *arr, unsigned int addSize)
 }
 
 
-ARR_ERR_CODE decrease_DA_size(DynamicArray *arr, unsigned int minusSize)
+ARR_ERR_CODE decrease_DA_size(DynamicArray *arr, size_t minusSize)
 {
     // If decrease more than array size just make array size 0
-    int sizeTest = arr->maxSize - minusSize;
-    if( sizeTest < 0 ) { minusSize = arr->maxSize; }
+    if( size_t_will_overflow_minus(arr->maxSize, minusSize) ) { minusSize = arr->maxSize; } // Overflow check
+    size_t decreasedSize = arr->maxSize - minusSize;
 
-    void* tmp = realloc(arr->arrayPointer, arr->dataTypeSize*arr->size - arr->dataTypeSize*minusSize);
+    void* tmp = realloc(arr->arrayPointer, arr->dataTypeSize*decreasedSize);
     if (tmp == NULL) { ERROR("Unable to realloc."); return ARR_ERR_REALLOC; }
 
     arr->maxSize -= minusSize;
@@ -84,18 +87,18 @@ ARR_ERR_CODE decrease_DA_size(DynamicArray *arr, unsigned int minusSize)
 }
 
 
-ARR_ERR_CODE resize_DA(DynamicArray *arr, unsigned int destSize)
+ARR_ERR_CODE resize_DA(DynamicArray *arr, size_t destSize)
 {
     ARR_ERR_CODE err_result = ARR_ERR_OK;
 
     if (destSize > arr->maxSize)
     {
-        unsigned int addSize = destSize - arr->maxSize;
+        size_t addSize = destSize - arr->maxSize;
         err_result = increase_DA_size(arr, addSize);
     }
     else if (destSize < arr->maxSize)
     {
-        unsigned int minusSize = arr->maxSize - destSize;
+        size_t minusSize = arr->maxSize - destSize;
         err_result = decrease_DA_size(arr, minusSize);
     }
 
@@ -106,12 +109,11 @@ ARR_ERR_CODE resize_DA(DynamicArray *arr, unsigned int destSize)
 // CHANGE ARRAY MANAGEMENT
 // ---------------------------------------
 
-ARR_ERR_CODE set_DA_at(DynamicArray *arr, void* data, unsigned int index)
+ARR_ERR_CODE set_DA_at(DynamicArray *arr, void* data, size_t index)
 {
-    printf("index: %d\n",index);
     if (index >= arr->maxSize)
     {
-        ERROR("Tried to set index: %u, when max index is %u in DynamicArray.", index, arr->maxSize-1);
+        ERROR("Tried to set index: %Iu, when max index is %Iu in DynamicArray.", index, arr->maxSize-1);
         return ARR_ERR_INDEX;
     }
 
@@ -123,21 +125,21 @@ ARR_ERR_CODE set_DA_at(DynamicArray *arr, void* data, unsigned int index)
 }
 
 
-ARR_ERR_CODE append_DA(DynamicArray *arr, void* data, unsigned int dataSize)
+ARR_ERR_CODE append_DA(DynamicArray *arr, void* data, size_t dataSize)
 {
     ARR_ERR_CODE err_result = ARR_ERR_OK;
 
-    unsigned int lenCombined = dataSize + arr->size;
+    size_t lenCombined = dataSize + arr->size;
     if (lenCombined > arr->maxSize)
     {
-        unsigned int increaseSize = lenCombined - arr->maxSize;
+        size_t increaseSize = lenCombined - arr->maxSize;
         err_result = increase_DA_size(arr, increaseSize);
     }
 
     // Copy the array
-    for (unsigned int i=0; i<dataSize; i++)
+    for (size_t i=0; i<dataSize; i++)
     {
-        unsigned int arrIndex = i + arr->size;
+        size_t arrIndex = i + arr->size;
         memcpy( ARR_PTR_AT(arr->arrayPointer, arr->dataTypeSize, arrIndex),
                 ARR_PTR_AT(data, arr->dataTypeSize, i), arr->dataTypeSize);
     }
@@ -151,11 +153,11 @@ ARR_ERR_CODE append_DA(DynamicArray *arr, void* data, unsigned int dataSize)
 // GET FROM ARRAY
 // ---------------------------------------
 
-void* get_DA_ptr_at(DynamicArray *arr, unsigned int index)
+void* get_DA_ptr_at(DynamicArray *arr, size_t index)
 {
     if (index >= arr->maxSize)
     {
-        ERROR("Tried to get index: %u, when max index is %u in DynamicArray.", index, arr->maxSize-1);
+        ERROR("Tried to get index: %Iu, when max index is %Iu in DynamicArray.", index, arr->maxSize-1);
         return NULL;
     }
     return ARR_PTR_AT(arr->arrayPointer, arr->dataTypeSize, index);
@@ -183,8 +185,10 @@ DynamicArray create_DA(void *data, size_t size, size_t dataTypeSize, DA_DATA_TYP
     arr.size = size;
     arr.maxSize = size;
     arr.dataTypeSize = dataTypeSize;
-    arr.arrayPointer = malloc( size*dataTypeSize );
     arr.DATA_TYPE = DATA_TYPE;
+
+    arr.arrayPointer = malloc( size*dataTypeSize );
+    if (arr.arrayPointer == NULL) {ERROR("Failed to malloc."); exit(1); }
 
     // Copy the array
     for (size_t i=0; i<size; i++)

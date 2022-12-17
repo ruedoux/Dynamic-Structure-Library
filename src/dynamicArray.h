@@ -29,10 +29,10 @@ typedef enum {
 /* DYNAMIC ARR */
 typedef struct{
     void *arrayPointer;         // Void pointer to array
-    unsigned int dataTypeSize;  // Size of data type
+    size_t dataTypeSize;  // Size of data type
 
-    unsigned int size;          // Number of objects in array
-    unsigned int maxSize;       // Number of max objects in array
+    size_t size;          // Number of objects in array
+    size_t maxSize;       // Number of max objects in array
 
     DA_DATA_TYPE DATA_TYPE;     // Data type
 } DynamicArray;
@@ -48,25 +48,25 @@ DynamicArray create_DA(void*, size_t, size_t, DA_DATA_TYPE);
 void destroy_DA(DynamicArray*);
 
 // Get pointer to object at given index, return NULL if incorrect index
-void* get_DA_ptr_at(DynamicArray*, unsigned int);
+void* get_DA_ptr_at(DynamicArray*, size_t);
 
 // Checks if array is empty
 char is_DA_empty(DynamicArray*);
 
 // Appends array of the same type to the dynamic array
-ARR_ERR_CODE append_DA(DynamicArray*, void*, unsigned int);
+ARR_ERR_CODE append_DA(DynamicArray*, void*, size_t);
 
 // Sets value of array at given index
-ARR_ERR_CODE set_DA_at(DynamicArray*, void*, unsigned int);
+ARR_ERR_CODE set_DA_at(DynamicArray*, void*, size_t);
 
 // Increases maximum size of array
-ARR_ERR_CODE increase_DA_size(DynamicArray*, unsigned int);
+ARR_ERR_CODE increase_DA_size(DynamicArray*, size_t);
 
 // Decreases maximum size of array
-ARR_ERR_CODE decrease_DA_size(DynamicArray*, unsigned int);
+ARR_ERR_CODE decrease_DA_size(DynamicArray*, size_t);
 
 // Resizes array to a given size
-ARR_ERR_CODE resize_DA(DynamicArray*, unsigned int);
+ARR_ERR_CODE resize_DA(DynamicArray*, size_t);
 
 // Tries to convert array content into string
 void DA_to_str(char *, DynamicArray *, size_t);

@@ -8,7 +8,7 @@ void print_CA_info( CharArray *arr, char *additionalInfo)
 {
     printf("---------------------------------\n");
     printf("CHAR ARRAY INFO:\n");
-    printf("size: %u, maxSize: %u\n", arr->size, arr->maxSize);
+    printf("size: %Iu, maxSize: %Iu\n", arr->size, arr->maxSize);
     printf("text: %s\n", arr->arrayPointer);
     if (strlen(additionalInfo) != 0) { printf("Additional info: "); printf("%s",additionalInfo); }
     printf("---------------------------------\n");
@@ -18,10 +18,13 @@ void print_CA_info( CharArray *arr, char *additionalInfo)
 // SIZE MANAGEMENT
 // ---------------------------------------
 
-ARR_ERR_CODE increase_CA_size( CharArray *arr, unsigned int addSize)
+ARR_ERR_CODE increase_CA_size( CharArray *arr, size_t addSize)
 {
     // +1 to size so i can put null at the end
-    void* tmp = realloc(arr->arrayPointer,sizeof(char)*arr->size + sizeof(char)*addSize + 1);
+    if (size_t_will_overflow_add(arr->maxSize,addSize)) { DEBUG("Size overflow."); return ARR_ERR_OVER;}
+    size_t increaseSize = arr->maxSize + addSize;
+
+    void* tmp = realloc(arr->arrayPointer, sizeof(char)*(increaseSize + 1));
     if (tmp == NULL) { ERROR("Unable to realloc."); return ARR_ERR_REALLOC; }
     
     arr->maxSize += addSize;
@@ -31,14 +34,14 @@ ARR_ERR_CODE increase_CA_size( CharArray *arr, unsigned int addSize)
 }
 
 
-ARR_ERR_CODE decrease_CA_size( CharArray *arr, unsigned int minusSize)
+ARR_ERR_CODE decrease_CA_size( CharArray *arr, size_t minusSize)
 {
     // If decrease more than array size just make array size 0
-    int sizeTest = arr->maxSize - minusSize;
-    if( sizeTest < 0 ) { minusSize = arr->maxSize; }
+    if( size_t_will_overflow_minus(arr->maxSize, minusSize) ) { minusSize = arr->maxSize; } // Overflow check
+    size_t decreasedSize = arr->maxSize - minusSize;
 
     // +1 to size so i can put null at the end
-    void* tmp = realloc(arr->arrayPointer,sizeof(char)*arr->size - sizeof(char)*minusSize + 1);
+    void* tmp = realloc(arr->arrayPointer, sizeof(char)*(decreasedSize + 1));
     if (tmp == NULL) { ERROR("Unable to realloc"); return ARR_ERR_REALLOC; }
 
     arr->maxSize -= minusSize;
@@ -50,18 +53,18 @@ ARR_ERR_CODE decrease_CA_size( CharArray *arr, unsigned int minusSize)
 }
 
 
-ARR_ERR_CODE resize_CA( CharArray *arr, unsigned int destSize)
+ARR_ERR_CODE resize_CA( CharArray *arr, size_t destSize)
 {
     ARR_ERR_CODE err_result = ARR_ERR_OK;
 
     if (destSize > arr->maxSize)
     {
-        unsigned int addSize = destSize - arr->maxSize;
+        size_t addSize = destSize - arr->maxSize;
         err_result = increase_CA_size(arr, addSize);
     }
     else if (destSize < arr->maxSize)
     {
-        unsigned int minusSize = arr->maxSize - destSize;
+        size_t minusSize = arr->maxSize - destSize;
         err_result = decrease_CA_size(arr, minusSize);
     }
 
@@ -81,11 +84,11 @@ char pop_CA_back( CharArray *arr)
 }
 
 
-ARR_ERR_CODE set_CA_char( CharArray *arr, char ch, unsigned int index)
+ARR_ERR_CODE set_CA_char( CharArray *arr, char ch, size_t index)
 {
     if (index >= arr->maxSize)
     {
-        ERROR("Tried to set index: %u, when max index is %u in CharArray.", index, arr->maxSize-1);
+        ERROR("Tried to set index: %Iu, when max index is %Iu in CharArray.", index, arr->maxSize-1);
         return ARR_ERR_INDEX;
     }
 
@@ -100,11 +103,11 @@ ARR_ERR_CODE append_CA( CharArray *arr, char *str)
 {
     ARR_ERR_CODE err_result = ARR_ERR_OK;
 
-    unsigned int strSize = strlen(str);
-    unsigned int lenCombined = strSize + arr->size;
+    size_t strSize = strlen(str);
+    size_t lenCombined = strSize + arr->size;
     if (lenCombined > arr->maxSize)
     {
-        unsigned int increaseSize = lenCombined - arr->maxSize;
+        size_t increaseSize = lenCombined - arr->maxSize;
         err_result = increase_CA_size(arr, increaseSize);
     }
 
@@ -140,11 +143,11 @@ int find_CA_str( CharArray *arr, char *str)
 }
 
 
-char get_CA_char( CharArray *arr, unsigned int index)
+char get_CA_char( CharArray *arr, size_t index)
 {
     if (index >= arr->maxSize)
     {
-        ERROR("Tried to get index: %u, when max index is %u in CharArray.", index, arr->maxSize-1);
+        ERROR("Tried to get index: %Iu, when max index is %Iu in CharArray.", index, arr->maxSize-1);
         return -1;
     }
     return arr->arrayPointer[index];
@@ -166,12 +169,15 @@ char is_CA_empty( CharArray *arr)
  CharArray create_CA(char *str)
 {
     CharArray arr;
-    unsigned int maxSize = strlen(str);
+    size_t maxSize = strlen(str);
 
     arr.size = maxSize;
     arr.maxSize = maxSize;
-    arr.arrayPointer = calloc(maxSize + 1, sizeof(char));  // Alocate memory
-    strcpy(arr.arrayPointer,str);                          // Copy string to arrayPointer
+
+    arr.arrayPointer = calloc(maxSize + 1, sizeof(char));
+    if (arr.arrayPointer == NULL) {ERROR("Failed to calloc."); exit(1); }
+
+    strcpy(arr.arrayPointer, str);
 
     return arr;
 }
