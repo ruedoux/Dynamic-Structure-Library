@@ -123,11 +123,11 @@ ARR_ERR_CODE append_CA( CharArray *arr, char *str)
 
 int find_CA_str( CharArray *arr, char *str)
 {
-    int strSize = strlen(str);
-    int matchingIndex = 0;
+    size_t strSize = strlen(str);
+    size_t matchingIndex = 0;
     int foundIndex = -1;
 
-    for (int i=0; i<arr->size; i++)
+    for (size_t i=0; i<arr->size; i++)
     {
         if (arr->arrayPointer[i] == str[matchingIndex])
         {

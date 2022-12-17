@@ -72,7 +72,7 @@ ARR_ERR_CODE decrease_list_size(List* list, size_t minusSize)
     // Destroy elements
     if (decreasedSize < list->size)
     {
-        for (int i = decreasedSize; i<list->size; i++)
+        for (size_t i = decreasedSize; i<list->size; i++)
         {
             //DEBUG("Destroying list element on index: %d",i);
             ListElement *elementPtr = list_get_element_ptr(list, i);
