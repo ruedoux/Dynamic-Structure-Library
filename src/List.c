@@ -54,7 +54,7 @@ ARR_ERR_CODE increase_list_size(List* list, size_t addSize)
     if (size_t_will_overflow_add(list->maxSize, addSize)) { DEBUG("Size overflow."); return ARR_ERR_OVER;}
     size_t increasedSize = list->maxSize + addSize;
 
-    void *tmp = realloc(list->elementPointers, increasedSize);
+    ListElement **tmp = realloc(list->elementPointers, increasedSize * sizeof(ListElement *));
     if (tmp == NULL) { ERROR("Unable to realloc."); return ARR_ERR_REALLOC; }
     list->elementPointers = tmp;
 
@@ -81,7 +81,7 @@ ARR_ERR_CODE decrease_list_size(List* list, size_t minusSize)
         }
     }
 
-    void *tmp = realloc(list->elementPointers, decreasedSize);
+    ListElement **tmp = realloc(list->elementPointers, decreasedSize * sizeof(ListElement *));
     if (tmp == NULL) { ERROR("Unable to realloc."); return ARR_ERR_REALLOC; }
     list->elementPointers = tmp;
 
@@ -120,8 +120,9 @@ ListElement* create_Element(void* data, size_t dataSize, char* ID)
     ListElement element;
     element.dataTypeSize = dataSize;
 
-    element.ID = malloc(strlen(ID));                 // Allocate space for char array
-    memcpy(element.ID, ID, strlen(ID));              // Copy char array
+    size_t id_len = strlen(ID) + 1;
+    element.ID = malloc(id_len);                 // Allocate space for char array
+    memcpy(element.ID, ID, id_len);              // Copy char array
 
     element.objectPointer = malloc(dataSize);        // Allocate space for data
     memcpy(element.objectPointer, data, dataSize);   // Copy data
