@@ -57,6 +57,9 @@ ARR_ERR_CODE increase_list_size(List* list, size_t addSize)
     if (tmp == NULL) { ERROR("Unable to realloc."); return ARR_ERR_REALLOC; }
     list->elementPointers = tmp;
 
+    // NULL new elements
+    for (size_t i=list->maxSize; i<increasedSize; i++){ list->elementPointers[i] = NULL; }
+
     list->maxSize += addSize;
 
     return ARR_ERR_OK;
@@ -74,7 +77,6 @@ ARR_ERR_CODE decrease_list_size(List* list, size_t minusSize)
     {
         for (size_t i = decreasedSize; i<list->size; i++)
         {
-            //DEBUG("Destroying list element on index: %d",i);
             ListElement *elementPtr = list_get_element_ptr(list, i);
             destory_listElement(&elementPtr);
         }
@@ -165,7 +167,7 @@ ListElement* create_listElement(void* data, size_t dataSize, char* ID)
     memcpy(element.objectPointer, data, dataSize);
 
     // Allocate space for the element and copy it
-    ListElement *Eptr = malloc(sizeof *Eptr);
+    ListElement *Eptr = malloc(sizeof *Eptr); //DEBUG("Creating Eptr: %p", Eptr);
     if (Eptr == NULL) { return NULL; }
     memcpy(Eptr, &element, sizeof *Eptr);
 
@@ -185,7 +187,7 @@ List* create_list()
     if (list.elementPointers == NULL) {ERROR("Failed to malloc."); exit(1); }
 
     // Allocate space for the list and copy it
-    List *Lptr = malloc(sizeof *Lptr);
+    List *Lptr = malloc(sizeof *Lptr);  //DEBUG("Creating list: %p", Lptr);
     if (Lptr == NULL) { return NULL; }
     memcpy(Lptr, &list, sizeof *Lptr);
 
@@ -199,7 +201,7 @@ List* create_list()
 void destory_listElement(ListElement **ptrToElement)
 {
     // Get the actual pointer from pointer to a pointer
-    ListElement *element = *ptrToElement;
+    ListElement *element = *ptrToElement; //DEBUG("Destroying element: %p",element);
 
     free_and_NULL(element->objectPointer);
     free_and_NULL(element->ID);
@@ -210,12 +212,11 @@ void destory_listElement(ListElement **ptrToElement)
 void destroy_list(List **ptrTolist)
 {
     // Get the actual pointer from pointer to a pointer
-    List *list = *ptrTolist;
+    List *list = *ptrTolist; //DEBUG("Destroying list: %p", list);
 
     // Free all elements in list
     for (size_t i=0; i<list->size;i++)
     {
-        //DEBUG("Destroying list element on index: %d",i);
         ListElement *elementPtr = list_get_element_ptr(list, i);
         if (elementPtr == NULL) { continue; }
         destory_listElement(&elementPtr);

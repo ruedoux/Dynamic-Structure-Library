@@ -109,6 +109,7 @@ void test_List()
     // START------------------------------------
     int val = 111;
     list_append(list, "abc", 4, "str");
+    resize_list(list, 5);
     list_append(list, &val, sizeof(int), "int");
     list_append(list, "a", 2, "str");
     // END--------------------------------------
