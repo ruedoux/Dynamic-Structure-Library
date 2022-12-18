@@ -104,23 +104,28 @@ void test_DA_int()
 
 void test_List()
 {
-    List list = create_list();
+    List *list = create_list();
 
-    int val = 156;
+    // START------------------------------------
+    int val = 111;
+    list_append(list, "abc", 4, "str");
+    list_append(list, &val, sizeof(int), "int");
+    list_append(list, "a", 2, "str");
+    // END--------------------------------------
 
-    for (int i=0;i<2;i++) { list_append(&list, &val, sizeof(int), "int"); }
+    // START------------------------------------
+    char buffor[255];
+    sprintf(buffor,"Content of element index 0: %s\n", (char*)(list_get_element_ptr(list, 0)->objectPointer));
+    print_list_info(list, buffor);
 
-    print_list_info(&list, "");
+    sprintf(buffor,"Content of element index 1: %d\n", *(int*)(list_get_element_ptr(list, 1)->objectPointer));
+    print_list_info(list, buffor);
 
-    //resize_list(&list, 10);
-    //print_list_info(&list, "");
+    sprintf(buffor,"Content of element index 2: %s\n", (char*)(list_get_element_ptr(list, 2)->objectPointer));
+    print_list_info(list, buffor);
+    // END--------------------------------------
 
-    list_append(&list, "abc", 3, "str");
-    list_append(&list, &val, sizeof(int), "int");
-    list_append(&list, "a", 1, "str");
-    list_append(&list, "a", 1, "str");
-
-    print_list_info(&list, "");
+    destroy_list(&list);
 }
 
 

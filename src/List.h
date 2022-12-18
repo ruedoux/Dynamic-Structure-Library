@@ -22,11 +22,13 @@ typedef struct{
 // FUNCTIONS
 // ---------------------------------------
 
-List create_list();
+List* create_list();
 
-void destroy_list(List*);
+ListElement* create_listElement(void*, size_t, char*);
 
-void destory_list_element(ListElement*);
+void destroy_list(List**);
+
+void destory_listElement(ListElement**);
 
 void print_list_info(List*, char*);
 
