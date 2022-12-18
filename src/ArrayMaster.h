@@ -18,6 +18,7 @@
 // Returns pointer to i element of the dynamic array
 #define ARR_PTR_AT(ptr, size, i) ( (void *)((char *)ptr + i * size) )
 
+// Frees a given allocated pointer and NULL's it
 #define free_and_NULL(ptr) (free(ptr), ptr = NULL)
 
 // ---------------------------------------

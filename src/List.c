@@ -34,6 +34,7 @@ void print_list_info(List *list, char *additionalInfo)
 void print_listElement_info(List *list, size_t index, char *additionalInfo)
 {
     ListElement *ePtr = list_get_element_ptr(list, index);
+    if (ePtr == NULL) { return; }
 
     printf("---------------------------------\n");
     printf("LIST ELEMENT INFO:\n");
