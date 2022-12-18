@@ -56,6 +56,7 @@ ARR_ERR_CODE increase_list_size(List* list, size_t addSize)
 
     void *tmp = realloc(list->elementPointers, increasedSize);
     if (tmp == NULL) { ERROR("Unable to realloc."); return ARR_ERR_REALLOC; }
+    list->elementPointers = tmp;
 
     list->maxSize += addSize;
 
@@ -82,6 +83,7 @@ ARR_ERR_CODE decrease_list_size(List* list, size_t minusSize)
 
     void *tmp = realloc(list->elementPointers, decreasedSize);
     if (tmp == NULL) { ERROR("Unable to realloc."); return ARR_ERR_REALLOC; }
+    list->elementPointers = tmp;
 
     list->maxSize -= minusSize;
     if (list->size > list->maxSize){ list->size = list->maxSize; }

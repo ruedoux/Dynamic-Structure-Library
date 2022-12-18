@@ -26,6 +26,7 @@ ARR_ERR_CODE increase_CA_size( CharArray *arr, size_t addSize)
 
     void* tmp = realloc(arr->arrayPointer, sizeof(char)*(increaseSize + 1));
     if (tmp == NULL) { ERROR("Unable to realloc."); return ARR_ERR_REALLOC; }
+    arr->arrayPointer = tmp;
     
     arr->maxSize += addSize;
     arr->arrayPointer[arr->size+1] = '\0'; // Termination of array
@@ -43,6 +44,7 @@ ARR_ERR_CODE decrease_CA_size( CharArray *arr, size_t minusSize)
     // +1 to size so i can put null at the end
     void* tmp = realloc(arr->arrayPointer, sizeof(char)*(decreasedSize + 1));
     if (tmp == NULL) { ERROR("Unable to realloc"); return ARR_ERR_REALLOC; }
+    arr->arrayPointer = tmp;
 
     arr->maxSize -= minusSize;
     if (arr->size > arr->maxSize){ arr->size = arr->maxSize; }

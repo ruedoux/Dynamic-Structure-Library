@@ -65,6 +65,7 @@ ARR_ERR_CODE increase_DA_size(DynamicArray *arr, size_t addSize)
 
     void* tmp = realloc(arr->arrayPointer, arr->dataTypeSize*increaseSize);
     if (tmp == NULL) { ERROR("Unable to realloc."); return ARR_ERR_REALLOC; }
+    arr->arrayPointer = tmp;
 
     arr->maxSize += addSize;
     return ARR_ERR_OK;
@@ -79,6 +80,7 @@ ARR_ERR_CODE decrease_DA_size(DynamicArray *arr, size_t minusSize)
 
     void* tmp = realloc(arr->arrayPointer, arr->dataTypeSize*decreasedSize);
     if (tmp == NULL) { ERROR("Unable to realloc."); return ARR_ERR_REALLOC; }
+    arr->arrayPointer = tmp;
 
     arr->maxSize -= minusSize;
     if (arr->size > arr->maxSize){ arr->size = arr->maxSize; }

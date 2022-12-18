@@ -112,8 +112,8 @@ void test_List()
 
     print_list_info(&list, "");
 
-    resize_list(&list, 10);
-    print_list_info(&list, "");
+    //resize_list(&list, 10);
+    //print_list_info(&list, "");
 
     list_append(&list, "abc", 3, "str");
     list_append(&list, &val, sizeof(int), "int");
