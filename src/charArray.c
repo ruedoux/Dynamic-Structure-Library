@@ -8,8 +8,15 @@ void print_CA_info( CharArray *arr, char *additionalInfo)
 {
     printf("---------------------------------\n");
     printf("CHAR ARRAY INFO:\n");
-    printf("size: "TYPE_SIZE_T", maxSize: "TYPE_SIZE_T"\n", arr->size, arr->maxSize);
-    printf("text: %s\n", arr->arrayPointer);
+    printf("maxSize: "TYPE_SIZE_T"\n", arr->maxSize);
+    printf("text: ");
+    for (size_t i=0;i<arr->maxSize;i++)
+    {
+        char ch = arr->arrayPointer[i];
+        if ((unsigned)ch>126 || (unsigned)ch<32) { ch = '#'; }
+        putchar(ch);
+    }
+    printf("\n");
     if (strlen(additionalInfo) != 0) { printf("Additional info: "); printf("%s",additionalInfo); }
     printf("---------------------------------\n");
 }
@@ -28,6 +35,7 @@ ARR_ERR_CODE increase_CA_size( CharArray *arr, size_t addSize)
     if (tmp == NULL) { ERROR("Unable to realloc."); return ARR_ERR_REALLOC; }
     arr->arrayPointer = tmp;
 
+    // NULL new elements
     for (size_t i=arr->maxSize; i<increasedSize; i++){ arr->arrayPointer[i] = '\0'; }
     
     arr->maxSize += addSize;
@@ -48,9 +56,7 @@ ARR_ERR_CODE decrease_CA_size( CharArray *arr, size_t minusSize)
     arr->arrayPointer = tmp;
 
     arr->maxSize -= minusSize;
-    if (arr->size > arr->maxSize){ arr->size = arr->maxSize; }
-
-    arr->arrayPointer[arr->size] = '\0'; // Termination of array
+    arr->arrayPointer[arr->maxSize] = '\0'; // Termination of array
 
     return ARR_ERR_OK;
 }
@@ -81,7 +87,7 @@ ARR_ERR_CODE resize_CA( CharArray *arr, size_t destSize)
 /* Pops last char from array */
 char pop_CA_back( CharArray *arr)
 {
-    char ch = arr->arrayPointer[arr->size - 1];
+    char ch = arr->arrayPointer[arr->maxSize - 1];
     decrease_CA_size(arr, 1);
     return ch;
 }
@@ -96,26 +102,17 @@ ARR_ERR_CODE set_CA_char( CharArray *arr, char ch, size_t index)
     }
 
     arr->arrayPointer[index] = ch;
-    if (index > arr->size-1){ arr->size = index + 1; }
-
     return ARR_ERR_OK;
 }
 
 
-ARR_ERR_CODE append_CA( CharArray *arr, char *str)
+ARR_ERR_CODE append_CA(CharArray *arr, char *str)
 {
     ARR_ERR_CODE err_result = ARR_ERR_OK;
+    size_t preIncreaseSize = arr->maxSize;
 
-    size_t strSize = strlen(str);
-    size_t lenCombined = strSize + arr->size;
-    if (lenCombined > arr->maxSize)
-    {
-        size_t increaseSize = lenCombined - arr->maxSize;
-        err_result = increase_CA_size(arr, increaseSize);
-    }
-
-    strcpy(arr->arrayPointer + arr->size, str);
-    arr->size += strSize;
+    err_result = increase_CA_size(arr, strlen(str));
+    memcpy(arr->arrayPointer + preIncreaseSize, str, strlenT(str));
 
     return err_result;
 }
@@ -130,7 +127,7 @@ int find_CA_str(CharArray *arr, char *str)
     size_t matchingIndex = 0;
     int foundIndex = -1;
 
-    for (size_t i=0; i<arr->size; i++)
+    for (size_t i=0; i<arr->maxSize; i++)
     {
         if (arr->arrayPointer[i] == str[matchingIndex])
         {
@@ -160,7 +157,7 @@ char get_CA_char( CharArray *arr, size_t index)
 char is_CA_empty( CharArray *arr)
 {
     char isEmpty = 1;
-    if (arr->size > 0) { isEmpty = 0; }
+    if (arr->maxSize > 0) { isEmpty = 0; }
     return isEmpty;
 }
 
@@ -172,15 +169,13 @@ char is_CA_empty( CharArray *arr)
 CharArray* create_CA(char *str)
 {
     CharArray charArr;
-    size_t maxSize = strlen(str);
 
-    charArr.size = maxSize;
-    charArr.maxSize = maxSize;
+    charArr.maxSize = strlen(str);
 
     // Alocate space for string and copy it
-    charArr.arrayPointer = calloc(maxSize + 1, sizeof(char));
+    charArr.arrayPointer = calloc(strlenT(str), sizeof(char));
     if (charArr.arrayPointer == NULL) {ERROR("Failed to calloc."); exit(1); }
-    strcpy(charArr.arrayPointer, str);
+    memcpy(charArr.arrayPointer, str, strlenT(str));
 
     // Allocate space for the char array and copy it
     CharArray *ArrPtr = malloc(sizeof *ArrPtr);  //DEBUG("Creating charArray: %p", ArrPtr);

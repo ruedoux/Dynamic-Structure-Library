@@ -152,6 +152,6 @@ int main()
     //test_DA_int();    // Dynamic array tests (int)
     //test_List();      // List tests
     
-    DEBUG("DONE");
+    DEBUG("WORKS");
     return 0;
 }

@@ -7,8 +7,7 @@
 
 /* CHAR ARRAY */
 typedef struct{
-    char *arrayPointer;     // Char pointer to array
-    size_t size;          // Size of the text (can be printed with %s)
+    char *arrayPointer;    // Char pointer to array
     size_t maxSize;       // Maximum size of array
 } CharArray;
 
