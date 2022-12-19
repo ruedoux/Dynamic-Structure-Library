@@ -11,7 +11,7 @@ void print_DA_info(DynamicArray *dArr, char *additionalInfo)
     if (dArr->DATA_TYPE != DA_DATA_NA)
     {
         char buffor[255];
-        for (size_t i=0; i<dArr->size; i++)
+        for (size_t i=0; i<dArr->maxSize; i++)
         {
             DA_to_str(buffor, dArr, i);
             append_CA(strArr, buffor);
@@ -24,7 +24,7 @@ void print_DA_info(DynamicArray *dArr, char *additionalInfo)
 
     printf("---------------------------------\n");
     printf("DYNAMIC ARRAY INFO:\n");
-    printf("size: "TYPE_SIZE_T", maxSize: "TYPE_SIZE_T", dataTypeSize: "TYPE_SIZE_T"\n", dArr->size, dArr->maxSize, dArr->dataTypeSize);
+    printf("maxSize: "TYPE_SIZE_T", dataTypeSize: "TYPE_SIZE_T"\n", dArr->maxSize, dArr->dataTypeSize);
     printf("Content: %s\n", strArr->arrayPointer);
     if (strlen(additionalInfo) != 0) { printf("Additional info: "); printf("%s",additionalInfo); }
     printf("---------------------------------\n");
@@ -61,11 +61,17 @@ void DA_to_str(char *buffor, DynamicArray *arr, size_t index)
 ARR_ERR_CODE increase_DA_size(DynamicArray *arr, size_t addSize)
 {
     if (size_t_will_overflow_add(arr->maxSize, addSize)) { DEBUG("Size overflow."); return ARR_ERR_OVER;}
-    size_t increaseSize = arr->maxSize + addSize;
+    size_t increasedSize = arr->maxSize + addSize;
 
-    void* tmp = realloc(arr->arrayPointer, arr->dataTypeSize*increaseSize);
+    void* tmp = realloc(arr->arrayPointer, arr->dataTypeSize*increasedSize);
     if (tmp == NULL) { ERROR("Unable to realloc."); return ARR_ERR_REALLOC; }
     arr->arrayPointer = tmp;
+
+    // NULL new elements
+    for (size_t i=arr->maxSize; i<increasedSize; i++)
+    {
+        memset(ARR_PTR_AT(arr->arrayPointer, arr->dataTypeSize, i), 0, arr->dataTypeSize);
+    }
 
     arr->maxSize += addSize;
     return ARR_ERR_OK;
@@ -83,7 +89,6 @@ ARR_ERR_CODE decrease_DA_size(DynamicArray *arr, size_t minusSize)
     arr->arrayPointer = tmp;
 
     arr->maxSize -= minusSize;
-    if (arr->size > arr->maxSize){ arr->size = arr->maxSize; }
 
     return ARR_ERR_OK;
 }
@@ -121,7 +126,6 @@ ARR_ERR_CODE set_DA_at(DynamicArray *arr, void* data, size_t index)
 
     memcpy( ARR_PTR_AT(arr->arrayPointer, arr->dataTypeSize, index),
             data, arr->dataTypeSize);
-    if (index > arr->size-1){ arr->size = index; }
 
     return ARR_ERR_OK;
 }
@@ -130,23 +134,18 @@ ARR_ERR_CODE set_DA_at(DynamicArray *arr, void* data, size_t index)
 ARR_ERR_CODE append_DA(DynamicArray *arr, void* data, size_t dataSize)
 {
     ARR_ERR_CODE err_result = ARR_ERR_OK;
+    size_t oldMaxSize = arr->maxSize;
 
-    size_t lenCombined = dataSize + arr->size;
-    if (lenCombined > arr->maxSize)
-    {
-        size_t increaseSize = lenCombined - arr->maxSize;
-        err_result = increase_DA_size(arr, increaseSize);
-    }
+    // Increase the max size
+    err_result = increase_DA_size(arr, dataSize);
 
     // Copy the array
     for (size_t i=0; i<dataSize; i++)
     {
-        size_t arrIndex = i + arr->size;
+        size_t arrIndex = i + oldMaxSize;
         memcpy( ARR_PTR_AT(arr->arrayPointer, arr->dataTypeSize, arrIndex),
                 ARR_PTR_AT(data, arr->dataTypeSize, i), arr->dataTypeSize);
     }
-
-    arr->size += dataSize;
 
     return err_result;
 }
@@ -169,7 +168,7 @@ void* get_DA_ptr_at(DynamicArray *arr, size_t index)
 char is_DA_empty(DynamicArray *arr)
 {
     char isEmpty = 1;
-    if (arr->size > 0) { isEmpty = 0; }
+    if (arr->maxSize > 0) { isEmpty = 0; }
     return isEmpty;
 }
 
@@ -184,7 +183,6 @@ DynamicArray* create_DA(void *data, size_t size, size_t dataTypeSize, DA_DATA_TY
     DynamicArray arr;
 
     // Assign array values
-    arr.size = size;
     arr.maxSize = size;
     arr.dataTypeSize = dataTypeSize;
     arr.DATA_TYPE = DATA_TYPE;
@@ -194,7 +192,7 @@ DynamicArray* create_DA(void *data, size_t size, size_t dataTypeSize, DA_DATA_TY
     if (arr.arrayPointer == NULL) {ERROR("Failed to malloc."); exit(1); }
 
     // Copy the array
-    for (size_t i=0; i<size; i++)
+    for (size_t i=0; i<arr.maxSize; i++)
     {
         memcpy( ARR_PTR_AT(arr.arrayPointer, arr.dataTypeSize, i),
                 ARR_PTR_AT(data, arr.dataTypeSize, i), arr.dataTypeSize);

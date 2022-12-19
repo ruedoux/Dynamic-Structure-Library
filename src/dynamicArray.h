@@ -30,8 +30,6 @@ typedef enum {
 typedef struct{
     void *arrayPointer;         // Void pointer to array
     size_t dataTypeSize;  // Size of data type
-
-    size_t size;          // Number of objects in array
     size_t maxSize;       // Number of max objects in array
 
     DA_DATA_TYPE DATA_TYPE;     // Data type
