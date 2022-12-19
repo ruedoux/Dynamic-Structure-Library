@@ -107,23 +107,32 @@ void test_List()
     List *list = create_list();
 
     // START------------------------------------
-    int val = 111;
-    list_append(list, "abc", 4, "str");
-    resize_list(list, 5);
-    list_append(list, &val, sizeof(int), "int");
-    list_append(list, "a", 2, "str");
-    // END--------------------------------------
-
-    // START------------------------------------
+    char *val1 = "abc";
+    int   val2 = 111;
+    char *val3 = "some text";
+    list_append(list, val1, strlenT(val1), "str");
+    list_append(list, &val2, sizeof val2, "int");
+    list_append(list, val3, strlenT(val3), "str");
+    
     char buffor[255];
-    sprintf(buffor,"Content of element index 0: %s\n", (char*)(list_get_element_ptr(list, 0)->objectPointer));
+    sprintf(buffor,"Content of element index 0: %s\n", (char*)list_obj_ptr_at(list, 0));
     print_list_info(list, buffor);
 
-    sprintf(buffor,"Content of element index 1: %d\n", *(int*)(list_get_element_ptr(list, 1)->objectPointer));
+    sprintf(buffor,"Content of element index 1: %d\n", *(int*)list_obj_ptr_at(list, 1));
     print_list_info(list, buffor);
 
-    sprintf(buffor,"Content of element index 2: %s\n", (char*)(list_get_element_ptr(list, 2)->objectPointer));
+    sprintf(buffor,"Content of element index 2: %s\n", (char*)list_obj_ptr_at(list, 2));
     print_list_info(list, buffor);
+    // END--------------------------------------
+    
+    // START------------------------------------
+    resize_list(list, 10);
+    print_list_info(list, "Resize to 10 result.\n");
+    // END--------------------------------------
+    
+    // START------------------------------------
+    resize_list(list, 2);
+    print_list_info(list, "Resize to 2 result.\n");
     // END--------------------------------------
 
     destroy_list(&list);
@@ -137,5 +146,7 @@ int main()
     //test_DA_char();   // Dynamic array tests (char)
     //test_DA_int();    // Dynamic array tests (int)
     test_List();      // List tests
+    
+    DEBUG("DONE");
     return 0;
 }

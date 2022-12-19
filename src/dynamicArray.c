@@ -24,7 +24,7 @@ void print_DA_info(DynamicArray *dArr, char *additionalInfo)
 
     printf("---------------------------------\n");
     printf("DYNAMIC ARRAY INFO:\n");
-    printf("size: %Iu, maxSize: %Iu, dataTypeSize: %Iu\n", dArr->size, dArr->maxSize, dArr->dataTypeSize);
+    printf("size: "TYPE_SIZE_T", maxSize: "TYPE_SIZE_T", dataTypeSize: "TYPE_SIZE_T"\n", dArr->size, dArr->maxSize, dArr->dataTypeSize);
     printf("Content: %s\n", strArr.arrayPointer);
     if (strlen(additionalInfo) != 0) { printf("Additional info: "); printf("%s",additionalInfo); }
     printf("---------------------------------\n");
@@ -115,7 +115,7 @@ ARR_ERR_CODE set_DA_at(DynamicArray *arr, void* data, size_t index)
 {
     if (index >= arr->maxSize)
     {
-        ERROR("Tried to set index: %Iu, when max index is %Iu in DynamicArray.", index, arr->maxSize-1);
+        ERROR("Tried to set index: "TYPE_SIZE_T", when max index is "TYPE_SIZE_T" in DynamicArray.", index, arr->maxSize-1);
         return ARR_ERR_INDEX;
     }
 
@@ -159,7 +159,7 @@ void* get_DA_ptr_at(DynamicArray *arr, size_t index)
 {
     if (index >= arr->maxSize)
     {
-        ERROR("Tried to get index: %Iu, when max index is %Iu in DynamicArray.", index, arr->maxSize-1);
+        ERROR("Tried to get index: "TYPE_SIZE_T", when max index is "TYPE_SIZE_T" in DynamicArray.", index, arr->maxSize-1);
         return NULL;
     }
     return ARR_PTR_AT(arr->arrayPointer, arr->dataTypeSize, index);

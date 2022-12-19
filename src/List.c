@@ -10,11 +10,14 @@ void print_list_info(List *list, char *additionalInfo)
     CharArray strArr = create_CA(""); // utilize char array
 
     char buffor[255];
-    for (size_t i=0; i<list->size; i++)
+    for (size_t i=0; i<list->maxSize; i++)
     {
-        sprintf(buffor,"%Iu:",i);
+        sprintf(buffor,""TYPE_SIZE_T":",i);
         append_CA(&strArr, buffor);
-        append_CA(&strArr, list->elementPointers[i]->ID);
+        
+        ListElement* element = list_get_element_ptr(list, i);
+        if (element == NULL) { append_CA(&strArr, "NULL"); }
+        else { append_CA(&strArr, list->elementPointers[i]->ID); }
         append_CA(&strArr, ", ");
     }
     pop_CA_back(&strArr); // pop space
@@ -22,7 +25,7 @@ void print_list_info(List *list, char *additionalInfo)
 
     printf("---------------------------------\n");
     printf("LIST INFO:\n");
-    printf("size: %Iu, maxSize: %Iu\n", list->size, list->maxSize);
+    printf("maxSize: "TYPE_SIZE_T"\n", list->maxSize);
     printf("Content: %s\n", strArr.arrayPointer);
     if (strlen(additionalInfo) != 0) { printf("Additional info: "); printf("%s",additionalInfo); }
     printf("---------------------------------\n");
@@ -38,7 +41,7 @@ void print_listElement_info(List *list, size_t index, char *additionalInfo)
 
     printf("---------------------------------\n");
     printf("LIST ELEMENT INFO:\n");
-    printf("dataTypeSize: %Iu\n", ePtr->dataTypeSize);
+    printf("dataTypeSize: "TYPE_SIZE_T"\n", ePtr->dataTypeSize);
     printf("Content Type: %s\n", ePtr->ID);
     if (strlen(additionalInfo) != 0) { printf("Additional info: "); printf("%s",additionalInfo); }
     printf("---------------------------------\n");
@@ -73,11 +76,12 @@ ARR_ERR_CODE decrease_list_size(List* list, size_t minusSize)
     size_t decreasedSize = list->maxSize - minusSize;
 
     // Destroy elements
-    if (decreasedSize < list->size)
+    if (decreasedSize < list->maxSize)
     {
-        for (size_t i = decreasedSize; i<list->size; i++)
+        for (size_t i = decreasedSize; i<list->maxSize; i++)
         {
             ListElement *elementPtr = list_get_element_ptr(list, i);
+            if (elementPtr == NULL) { continue; }
             destory_listElement(&elementPtr);
         }
     }
@@ -87,7 +91,6 @@ ARR_ERR_CODE decrease_list_size(List* list, size_t minusSize)
     list->elementPointers = tmp;
 
     list->maxSize -= minusSize;
-    if (list->size > list->maxSize){ list->size = list->maxSize; }
 
     return ARR_ERR_OK;
 }
@@ -120,11 +123,8 @@ ARR_ERR_CODE list_append(List* list, void* data, size_t dataSize, char* ID)
     ListElement *Eptr = create_listElement(data, dataSize, ID);
     if (Eptr == NULL) { ERROR("Unable to malloc."); return ARR_ERR_MALLOC; }
 
-    size_t lenCombined = list->size + 1;
-    if (lenCombined > list->maxSize) { increase_list_size(list, 1); }
-
-    list->size++;
-    list->elementPointers[list->size-1] = Eptr;
+    increase_list_size(list, 1);
+    list->elementPointers[list->maxSize-1] = Eptr;
 
     return ARR_ERR_OK;
 }
@@ -138,11 +138,23 @@ ListElement* list_get_element_ptr(List* list, size_t index)
 {
     if (index >= list->maxSize)
     {
-        ERROR("Tried to get index: %Iu, when max index is %Iu in List.", index, list->maxSize-1);
+        ERROR("Tried to get index: "TYPE_SIZE_T", when max index is "TYPE_SIZE_T" in List.", index, list->maxSize-1);
         return NULL;
     }
 
     return list->elementPointers[index];
+}
+
+
+void* list_obj_ptr_at(List *list, size_t index)
+{
+    if (index >= list->maxSize)
+    {
+        ERROR("Tried to get index: "TYPE_SIZE_T", when max index is "TYPE_SIZE_T" in List.", index, list->maxSize-1);
+        return NULL;
+    }
+    
+    return list_get_element_ptr(list, index)->objectPointer;
 }
 
 // ---------------------------------------
@@ -179,7 +191,6 @@ List* create_list()
 {
     // Create list
     List list;
-    list.size = 0;
     list.maxSize = 0;
 
     // Allocate space for pointer list
@@ -215,7 +226,7 @@ void destroy_list(List **ptrTolist)
     List *list = *ptrTolist; //DEBUG("Destroying list: %p", list);
 
     // Free all elements in list
-    for (size_t i=0; i<list->size;i++)
+    for (size_t i=0; i<list->maxSize;i++)
     {
         ListElement *elementPtr = list_get_element_ptr(list, i);
         if (elementPtr == NULL) { continue; }

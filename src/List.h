@@ -4,6 +4,9 @@
 
 #include "ArrayMaster.h"
 
+// ---------------------------------------
+// STRUCTS
+// ---------------------------------------
 
 /* LIST ELEMENTS */
 typedef struct{
@@ -15,7 +18,6 @@ typedef struct{
 /* LIST */
 typedef struct{
     ListElement **elementPointers;  // Array of pointer to elements
-    size_t size;                    // Number of objects in list
     size_t maxSize;                 // Number of max objects in list
 } List;
 
@@ -55,5 +57,8 @@ ARR_ERR_CODE resize_list(List*, size_t);
 
 // Returns pointer to element on a given index
 ListElement* list_get_element_ptr(List*, size_t);
+
+// Returns pointer to object inside of element on a given index
+void* list_obj_ptr_at(List*, size_t);
 
 #endif

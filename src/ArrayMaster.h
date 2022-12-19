@@ -21,6 +21,21 @@
 // Frees a given allocated pointer and NULL's it
 #define free_and_NULL(ptr) (free(ptr), ptr = NULL)
 
+// Returns size of char* + null terminator
+#define strlenT(str) strlen(str)+1
+
+// ---------------------------------------
+// WIN / LINUX MACROS
+// ---------------------------------------
+
+#ifdef _WIN32
+#define TYPE_SIZE_T "%Iu"
+#endif
+
+#ifdef linux
+#define TYPE_SIZE_T "%Ilu"
+#endif
+
 // ---------------------------------------
 // DEBUG / ERROR MANAGEMENT
 // ---------------------------------------

@@ -8,7 +8,7 @@ void print_CA_info( CharArray *arr, char *additionalInfo)
 {
     printf("---------------------------------\n");
     printf("CHAR ARRAY INFO:\n");
-    printf("size: %Iu, maxSize: %Iu\n", arr->size, arr->maxSize);
+    printf("size: "TYPE_SIZE_T", maxSize: "TYPE_SIZE_T"\n", arr->size, arr->maxSize);
     printf("text: %s\n", arr->arrayPointer);
     if (strlen(additionalInfo) != 0) { printf("Additional info: "); printf("%s",additionalInfo); }
     printf("---------------------------------\n");
@@ -90,7 +90,7 @@ ARR_ERR_CODE set_CA_char( CharArray *arr, char ch, size_t index)
 {
     if (index >= arr->maxSize)
     {
-        ERROR("Tried to set index: %Iu, when max index is %Iu in CharArray.", index, arr->maxSize-1);
+        ERROR("Tried to set index: "TYPE_SIZE_T", when max index is "TYPE_SIZE_T" in CharArray.", index, arr->maxSize-1);
         return ARR_ERR_INDEX;
     }
 
@@ -123,7 +123,7 @@ ARR_ERR_CODE append_CA( CharArray *arr, char *str)
 // GET FROM ARRAY
 // ---------------------------------------
 
-int find_CA_str( CharArray *arr, char *str)
+int find_CA_str(CharArray *arr, char *str)
 {
     size_t strSize = strlen(str);
     size_t matchingIndex = 0;
@@ -149,7 +149,7 @@ char get_CA_char( CharArray *arr, size_t index)
 {
     if (index >= arr->maxSize)
     {
-        ERROR("Tried to get index: %Iu, when max index is %Iu in CharArray.", index, arr->maxSize-1);
+        ERROR("Tried to get index: "TYPE_SIZE_T", when max index is "TYPE_SIZE_T" in CharArray.", index, arr->maxSize-1);
         return -1;
     }
     return arr->arrayPointer[index];
