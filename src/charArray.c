@@ -22,14 +22,15 @@ ARR_ERR_CODE increase_CA_size( CharArray *arr, size_t addSize)
 {
     // +1 to size so i can put null at the end
     if (size_t_will_overflow_add(arr->maxSize,addSize)) { DEBUG("Size overflow."); return ARR_ERR_OVER;}
-    size_t increaseSize = arr->maxSize + addSize;
+    size_t increasedSize = arr->maxSize + addSize;
 
-    void* tmp = realloc(arr->arrayPointer, sizeof(char)*(increaseSize + 1));
+    void* tmp = realloc(arr->arrayPointer, sizeof(char)*(increasedSize + 1));
     if (tmp == NULL) { ERROR("Unable to realloc."); return ARR_ERR_REALLOC; }
     arr->arrayPointer = tmp;
+
+    for (size_t i=arr->maxSize; i<increasedSize; i++){ arr->arrayPointer[i] = '\0'; }
     
     arr->maxSize += addSize;
-    arr->arrayPointer[arr->size+1] = '\0'; // Termination of array
 
     return ARR_ERR_OK;
 }

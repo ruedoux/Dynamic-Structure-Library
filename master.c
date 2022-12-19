@@ -142,10 +142,10 @@ void test_List()
 int main()
 {
     // Uncomment any function you want to test
-    //test_CA();        // Char array tests (String)
+    test_CA();        // Char array tests (String)
     //test_DA_char();   // Dynamic array tests (char)
     //test_DA_int();    // Dynamic array tests (int)
-    test_List();      // List tests
+    //test_List();      // List tests
     
     DEBUG("DONE");
     return 0;
