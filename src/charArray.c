@@ -169,27 +169,34 @@ char is_CA_empty( CharArray *arr)
 // CONSTRUCTOR
 // ---------------------------------------
 
- CharArray create_CA(char *str)
+CharArray* create_CA(char *str)
 {
-    CharArray arr;
+    CharArray charArr;
     size_t maxSize = strlen(str);
 
-    arr.size = maxSize;
-    arr.maxSize = maxSize;
+    charArr.size = maxSize;
+    charArr.maxSize = maxSize;
 
-    arr.arrayPointer = calloc(maxSize + 1, sizeof(char));
-    if (arr.arrayPointer == NULL) {ERROR("Failed to calloc."); exit(1); }
+    // Alocate space for string and copy it
+    charArr.arrayPointer = calloc(maxSize + 1, sizeof(char));
+    if (charArr.arrayPointer == NULL) {ERROR("Failed to calloc."); exit(1); }
+    strcpy(charArr.arrayPointer, str);
 
-    strcpy(arr.arrayPointer, str);
+    // Allocate space for the char array and copy it
+    CharArray *ArrPtr = malloc(sizeof *ArrPtr);  //DEBUG("Creating charArray: %p", ArrPtr);
+    if (ArrPtr == NULL) { return NULL; }
+    memcpy(ArrPtr, &charArr, sizeof *ArrPtr);
 
-    return arr;
+    return ArrPtr;
 }
 
 // ---------------------------------------
 // DESTRUCTOR
 // ---------------------------------------
 
-void destroy_CA( CharArray *arr)
+void destroy_CA( CharArray **ptrToArr)
 {
-    free(arr->arrayPointer);
+    CharArray *arr = *ptrToArr; //DEBUG("Destroying charArray: %p", arr);
+    free_and_NULL(arr->arrayPointer);
+    free_and_NULL(*ptrToArr);
 }

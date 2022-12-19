@@ -5,39 +5,39 @@
 
 void test_CA()
 {
-    CharArray arr = create_CA("");
-    print_CA_info(&arr,"Creation of char array (String).\n");
+    CharArray *arr = create_CA("");
+    print_CA_info(arr,"Creation of char array (String).\n");
 
     // START------------------------------------
-    append_CA(&arr, "good-job-is-done");
-    print_CA_info(&arr,"Append \"good-job-is-done\" result.\n");
+    append_CA(arr, "good-job-is-done");
+    print_CA_info(arr,"Append \"good-job-is-done\" result.\n");
     // END--------------------------------------
 
     // START------------------------------------
     char content[255];
-    sprintf(content,"found = %s, on index: %d\n", "job", find_CA_str(&arr, "job"));
-    print_CA_info(&arr,content);
+    sprintf(content,"found = %s, on index: %d\n", "job", find_CA_str(arr, "job"));
+    print_CA_info(arr,content);
     // END--------------------------------------
 
     // START------------------------------------
-    resize_CA(&arr, 5);
-    print_CA_info(&arr,"Resize to 5 result.\n");
+    resize_CA(arr, 5);
+    print_CA_info(arr,"Resize to 5 result.\n");
     // END--------------------------------------
 
     // START------------------------------------
-    append_CA(&arr, "1234567");
-    print_CA_info(&arr,"Append 1234567 result.\n");
+    append_CA(arr, "1234567");
+    print_CA_info(arr,"Append 1234567 result.\n");
     // END--------------------------------------
 
     // START------------------------------------
     char contentT[255];
-    sprintf(contentT,"Popped letter %c\n", pop_CA_back(&arr));
-    print_CA_info(&arr,contentT);
+    sprintf(contentT,"Popped letter %c\n", pop_CA_back(arr));
+    print_CA_info(arr,contentT);
     // END--------------------------------------
 
     // START------------------------------------
-    decrease_CA_size(&arr, 999);
-    print_CA_info(&arr,"Decrease size by 999 result.\n");
+    decrease_CA_size(arr, 999);
+    print_CA_info(arr,"Decrease size by 999 result.\n");
     // END--------------------------------------
 
     destroy_CA(&arr);
@@ -142,8 +142,8 @@ void test_List()
 int main()
 {
     // Uncomment any function you want to test
-    test_CA();        // Char array tests (String)
-    //test_DA_char();   // Dynamic array tests (char)
+    //test_CA();        // Char array tests (String)
+    test_DA_char();   // Dynamic array tests (char)
     //test_DA_int();    // Dynamic array tests (int)
     //test_List();      // List tests
     

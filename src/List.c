@@ -7,26 +7,26 @@
 
 void print_list_info(List *list, char *additionalInfo)
 {
-    CharArray strArr = create_CA(""); // utilize char array
+    CharArray *strArr = create_CA(""); // utilize char array
 
     char buffor[255];
     for (size_t i=0; i<list->maxSize; i++)
     {
         sprintf(buffor,""TYPE_SIZE_T":",i);
-        append_CA(&strArr, buffor);
+        append_CA(strArr, buffor);
         
         ListElement* element = list_get_element_ptr(list, i);
-        if (element == NULL) { append_CA(&strArr, "NULL"); }
-        else { append_CA(&strArr, list->elementPointers[i]->ID); }
-        append_CA(&strArr, ", ");
+        if (element == NULL) { append_CA(strArr, "NULL"); }
+        else { append_CA(strArr, list->elementPointers[i]->ID); }
+        append_CA(strArr, ", ");
     }
-    pop_CA_back(&strArr); // pop space
-    pop_CA_back(&strArr); // pop comma
+    pop_CA_back(strArr); // pop space
+    pop_CA_back(strArr); // pop comma
 
     printf("---------------------------------\n");
     printf("LIST INFO:\n");
     printf("maxSize: "TYPE_SIZE_T"\n", list->maxSize);
-    printf("Content: %s\n", strArr.arrayPointer);
+    printf("Content: %s\n", strArr->arrayPointer);
     if (strlen(additionalInfo) != 0) { printf("Additional info: "); printf("%s",additionalInfo); }
     printf("---------------------------------\n");
 

@@ -17,10 +17,10 @@ typedef struct{
 // ---------------------------------------
 
 // Creates a new char array
-CharArray create_CA(char*);
+CharArray *create_CA(char*);
 
 // Deletes array
-void destroy_CA(CharArray*);
+void destroy_CA(CharArray**);
 
 // Finds string in array
 int find_CA_str(CharArray*, char*);

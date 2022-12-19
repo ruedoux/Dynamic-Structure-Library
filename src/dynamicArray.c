@@ -6,7 +6,7 @@
 
 void print_DA_info(DynamicArray *dArr, char *additionalInfo)
 {
-    CharArray strArr = create_CA(""); // utilize char array
+    CharArray *strArr = create_CA(""); // utilize char array
 
     if (dArr->DATA_TYPE != DA_DATA_NA)
     {
@@ -14,18 +14,18 @@ void print_DA_info(DynamicArray *dArr, char *additionalInfo)
         for (size_t i=0; i<dArr->size; i++)
         {
             DA_to_str(buffor, dArr, i);
-            append_CA(&strArr, buffor);
-            append_CA(&strArr, ", ");
+            append_CA(strArr, buffor);
+            append_CA(strArr, ", ");
         }
-        pop_CA_back(&strArr); // pop space
-        pop_CA_back(&strArr); // pop comma
+        pop_CA_back(strArr); // pop space
+        pop_CA_back(strArr); // pop comma
 
-    } else {append_CA(&strArr, "Unknown data type, Unable to convert to text.");}
+    } else {append_CA(strArr, "Unknown data type, Unable to convert to text.");}
 
     printf("---------------------------------\n");
     printf("DYNAMIC ARRAY INFO:\n");
     printf("size: "TYPE_SIZE_T", maxSize: "TYPE_SIZE_T", dataTypeSize: "TYPE_SIZE_T"\n", dArr->size, dArr->maxSize, dArr->dataTypeSize);
-    printf("Content: %s\n", strArr.arrayPointer);
+    printf("Content: %s\n", strArr->arrayPointer);
     if (strlen(additionalInfo) != 0) { printf("Additional info: "); printf("%s",additionalInfo); }
     printf("---------------------------------\n");
 
