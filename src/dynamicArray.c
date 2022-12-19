@@ -178,7 +178,7 @@ char is_DA_empty(DynamicArray *arr)
 // ---------------------------------------
 
 /* Constructor for DynamicArray */
-DynamicArray create_DA(void *data, size_t size, size_t dataTypeSize, DA_DATA_TYPE DATA_TYPE)
+DynamicArray* create_DA(void *data, size_t size, size_t dataTypeSize, DA_DATA_TYPE DATA_TYPE)
 {
     if (size < 1){ ERROR("Tried to create empty dynamic Array!"); }
     DynamicArray arr;
@@ -189,6 +189,7 @@ DynamicArray create_DA(void *data, size_t size, size_t dataTypeSize, DA_DATA_TYP
     arr.dataTypeSize = dataTypeSize;
     arr.DATA_TYPE = DATA_TYPE;
 
+    // Alocate space for the array
     arr.arrayPointer = malloc( size*dataTypeSize );
     if (arr.arrayPointer == NULL) {ERROR("Failed to malloc."); exit(1); }
 
@@ -199,14 +200,22 @@ DynamicArray create_DA(void *data, size_t size, size_t dataTypeSize, DA_DATA_TYP
                 ARR_PTR_AT(data, arr.dataTypeSize, i), arr.dataTypeSize);
     }
 
-    return arr;
+    // Allocate space for the array and copy it
+    DynamicArray *arrPtr = malloc(sizeof *arrPtr); //DEBUG("Creating array: %p", arrPtr);
+    if (arrPtr == NULL) { return NULL; }
+    memcpy(arrPtr, &arr, sizeof *arrPtr);
+
+    return arrPtr;
 }
 
 // ---------------------------------------
 // DESTRUCTOR
 // ---------------------------------------
 
-void destroy_DA(DynamicArray *arr)
+void destroy_DA(DynamicArray **ptrToArr)
 {
-    free(arr->arrayPointer);
+    DynamicArray *arr = *ptrToArr; //DEBUG("Destroying charArray: %p", arr);
+
+    free_and_NULL(arr->arrayPointer);
+    free_and_NULL(*ptrToArr);
 }

@@ -197,6 +197,7 @@ CharArray* create_CA(char *str)
 void destroy_CA( CharArray **ptrToArr)
 {
     CharArray *arr = *ptrToArr; //DEBUG("Destroying charArray: %p", arr);
+
     free_and_NULL(arr->arrayPointer);
     free_and_NULL(*ptrToArr);
 }
