@@ -28,7 +28,7 @@ void print_CA_info( CharArray *arr, char *additionalInfo)
 ARR_ERR_CODE increase_CA_size( CharArray *arr, size_t addSize)
 {
     // +1 to size so i can put null at the end
-    if (size_t_will_overflow_add(arr->maxSize,addSize)) { DEBUG("Size overflow."); return ARR_ERR_OVER;}
+    if (size_t_will_overflow(arr->maxSize,addSize)) { DEBUG("Size overflow."); return ARR_ERR_OVER;}
     size_t increasedSize = arr->maxSize + addSize;
 
     void* tmp = realloc(arr->arrayPointer, sizeof(char)*(increasedSize + 1));
@@ -47,7 +47,7 @@ ARR_ERR_CODE increase_CA_size( CharArray *arr, size_t addSize)
 ARR_ERR_CODE decrease_CA_size( CharArray *arr, size_t minusSize)
 {
     // If decrease more than array size just make array size 0
-    if( size_t_will_overflow_minus(arr->maxSize, minusSize) ) { minusSize = arr->maxSize; } // Overflow check
+    if( size_t_will_underflow(arr->maxSize, minusSize) ) { minusSize = arr->maxSize; } // Overflow check
     size_t decreasedSize = arr->maxSize - minusSize;
 
     // +1 to size so i can put null at the end

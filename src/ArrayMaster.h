@@ -60,6 +60,7 @@ typedef enum {
 
 //  Example : DEBUG("MSG") will print : [filename: line_no] MSG \n
 # define DEBUG(msg,...) fprintf(stderr, BOLD BLUE"[DEBUG](%s:%d) " ANSI_RESET BOLD msg ANSI_RESET"\n" , __FILE__, __LINE__, ##__VA_ARGS__)
+
 //  Example : ERROR("ERROR") will print : [filename: line_no] ERROR \n
 # define ERROR(msg,...) fprintf(stderr, BOLD RED"[ERROR](%s:%d) " ANSI_RESET BOLD msg ANSI_RESET"\n" , __FILE__, __LINE__, ##__VA_ARGS__)
 
@@ -67,8 +68,10 @@ typedef enum {
 // FUNCTIONS
 // ---------------------------------------
 
-int size_t_will_overflow_minus(size_t, size_t);
+//checks if minus operation (a-b) on size_t variables will underflow
+int size_t_will_underflow(size_t, size_t);
 
-int size_t_will_overflow_add(size_t, size_t);
+//checks if plus operation (a+b) on size_t variables will overflow
+int size_t_will_overflow(size_t, size_t);
 
 #endif

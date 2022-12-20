@@ -53,7 +53,7 @@ void print_listElement_info(List *list, size_t index, char *additionalInfo)
 
 ARR_ERR_CODE increase_list_size(List* list, size_t addSize)
 {
-    if (size_t_will_overflow_add(list->maxSize, addSize)) { DEBUG("Size overflow."); return ARR_ERR_OVER;}
+    if (size_t_will_overflow(list->maxSize, addSize)) { DEBUG("Size overflow."); return ARR_ERR_OVER;}
     size_t increasedSize = list->maxSize + addSize;
 
     ListElement **tmp = realloc(list->elementPointers, increasedSize * sizeof(ListElement *));
@@ -72,7 +72,7 @@ ARR_ERR_CODE increase_list_size(List* list, size_t addSize)
 ARR_ERR_CODE decrease_list_size(List* list, size_t minusSize)
 {
     // If decrease more than list size just make list size 0
-    if( size_t_will_overflow_minus(list->maxSize, minusSize) ) { minusSize = list->maxSize; } // Overflow check
+    if( size_t_will_underflow(list->maxSize, minusSize) ) { minusSize = list->maxSize; } // Overflow check
     size_t decreasedSize = list->maxSize - minusSize;
 
     // Destroy elements
