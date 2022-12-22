@@ -9,4 +9,4 @@ REM ----------------------------------------
 if not exist "build" mkdir "build"
 
 @echo on
-gcc -Wall -Wextra -g3 *.c src/*.c -o build/build.exe
+gcc -Wall -Wextra -g3 -O -Werror *.c src/*.c -o build/build.exe
