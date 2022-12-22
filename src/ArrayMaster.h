@@ -2,6 +2,8 @@
 #ifndef ARRMASTER_C
 #define ARRMASTER_C
 
+#define _CRT_SECURE_NO_WARNINGS // VS
+
 // ---------------------------------------
 // LIBS
 // ---------------------------------------
