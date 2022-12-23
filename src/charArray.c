@@ -28,11 +28,11 @@ void print_CA_info( CharArray *arr, char *additionalInfo)
 ARR_ERR_CODE increase_CA_size( CharArray *arr, size_t addSize)
 {
     // +1 to size so i can put null at the end
-    if (size_t_will_overflow(arr->maxSize,addSize)) { DEBUG("Size overflow."); return ARR_ERR_OVER;}
+    if (size_t_will_overflow(arr->maxSize,addSize)) { ERROR_MSG("Size overflow."); return ARR_ERR_OVER;}
     size_t increasedSize = arr->maxSize + addSize;
 
     void* tmp = realloc(arr->arrayPointer, sizeof(char)*(increasedSize + 1));
-    if (tmp == NULL) { ERROR("Unable to realloc."); return ARR_ERR_REALLOC; }
+    if (tmp == NULL) { ERROR_MSG("Unable to realloc."); return ARR_ERR_REALLOC; }
     arr->arrayPointer = tmp;
 
     // NULL new elements
@@ -52,7 +52,7 @@ ARR_ERR_CODE decrease_CA_size( CharArray *arr, size_t minusSize)
 
     // +1 to size so i can put null at the end
     void* tmp = realloc(arr->arrayPointer, sizeof(char)*(decreasedSize + 1));
-    if (tmp == NULL) { ERROR("Unable to realloc"); return ARR_ERR_REALLOC; }
+    if (tmp == NULL) { ERROR_MSG("Unable to realloc"); return ARR_ERR_REALLOC; }
     arr->arrayPointer = tmp;
 
     arr->maxSize -= minusSize;
@@ -97,7 +97,7 @@ ARR_ERR_CODE set_CA_char( CharArray *arr, char ch, size_t index)
 {
     if (index >= arr->maxSize)
     {
-        ERROR("Tried to set index: "TYPE_SIZE_T", when max index is "TYPE_SIZE_T" in CharArray.", index, arr->maxSize-1);
+        ERROR_MSG("Tried to set index: "TYPE_SIZE_T", when max index is "TYPE_SIZE_T" in CharArray.", index, arr->maxSize-1);
         return ARR_ERR_INDEX;
     }
 
@@ -147,7 +147,7 @@ char get_CA_char( CharArray *arr, size_t index)
 {
     if (index >= arr->maxSize)
     {
-        ERROR("Tried to get index: "TYPE_SIZE_T", when max index is "TYPE_SIZE_T" in CharArray.", index, arr->maxSize-1);
+        ERROR_MSG("Tried to get index: "TYPE_SIZE_T", when max index is "TYPE_SIZE_T" in CharArray.", index, arr->maxSize-1);
         return -1;
     }
     return arr->arrayPointer[index];
@@ -174,11 +174,11 @@ CharArray* create_CA(char *str)
 
     // Alocate space for string and copy it
     charArr.arrayPointer = calloc(strlenT(str), sizeof(char));
-    if (charArr.arrayPointer == NULL) {ERROR("Failed to calloc."); exit(1); }
+    if (charArr.arrayPointer == NULL) {ERROR_MSG("Failed to calloc."); exit(1); }
     memcpy(charArr.arrayPointer, str, strlenT(str));
 
     // Allocate space for the char array and copy it
-    CharArray *ArrPtr = malloc(sizeof *ArrPtr);  //DEBUG("Creating charArray: %p", ArrPtr);
+    CharArray *ArrPtr = malloc(sizeof *ArrPtr);  //DEBUG_MSG("Creating charArray: %p", ArrPtr);
     if (ArrPtr == NULL) { return NULL; }
     memcpy(ArrPtr, &charArr, sizeof *ArrPtr);
 
@@ -191,7 +191,7 @@ CharArray* create_CA(char *str)
 
 void destroy_CA( CharArray **ptrToArr)
 {
-    CharArray *arr = *ptrToArr; //DEBUG("Destroying charArray: %p", arr);
+    CharArray *arr = *ptrToArr; //DEBUG_MSG("Destroying charArray: %p", arr);
 
     free_and_NULL(arr->arrayPointer);
     free_and_NULL(*ptrToArr);

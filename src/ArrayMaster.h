@@ -39,10 +39,10 @@
 #endif
 
 // ---------------------------------------
-// DEBUG / ERROR MANAGEMENT
+// DEBUG_MSG / ERROR_MSG MANAGEMENT
 // ---------------------------------------
 
-/* ARRAY ERROR CODES */
+/* ARRAY ERROR_MSG CODES */
 typedef enum {
     ARR_ERR_OK      =  0,  // Success
     ARR_ERR_ERR     = -1,  // Unspecified error
@@ -60,11 +60,11 @@ typedef enum {
 # define BLUE				"\033[34m"
 # define ANSI_RESET			"\033[0m"
 
-//  Example : DEBUG("MSG") will print : [filename: line_no] MSG \n
-# define DEBUG(msg,...) fprintf(stderr, BOLD BLUE"[DEBUG](%s:%d) " ANSI_RESET BOLD msg ANSI_RESET"\n" , __FILE__, __LINE__, ##__VA_ARGS__)
+//  Example : DEBUG_MSG("MSG") will print : [filename: line_no] MSG \n
+# define DEBUG_MSG(msg,...) fprintf(stderr, BOLD BLUE"[DEBUG](%s:%d) " ANSI_RESET BOLD msg ANSI_RESET"\n" , __FILE__, __LINE__, ##__VA_ARGS__)
 
-//  Example : ERROR("ERROR") will print : [filename: line_no] ERROR \n
-# define ERROR(msg,...) fprintf(stderr, BOLD RED"[ERROR](%s:%d) " ANSI_RESET BOLD msg ANSI_RESET"\n" , __FILE__, __LINE__, ##__VA_ARGS__)
+//  Example : ERROR_MSG("ERROR_MSG") will print : [filename: line_no] ERROR_MSG \n
+# define ERROR_MSG(msg,...) fprintf(stderr, BOLD RED"[ERROR](%s:%d) " ANSI_RESET BOLD msg ANSI_RESET"\n" , __FILE__, __LINE__, ##__VA_ARGS__)
 
 // ---------------------------------------
 // FUNCTIONS

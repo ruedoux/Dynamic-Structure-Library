@@ -60,11 +60,11 @@ void DA_to_str(char *buffor, DynamicArray *arr, size_t index)
 
 ARR_ERR_CODE increase_DA_size(DynamicArray *arr, size_t addSize)
 {
-    if (size_t_will_overflow(arr->maxSize, addSize)) { DEBUG("Size overflow."); return ARR_ERR_OVER;}
+    if (size_t_will_overflow(arr->maxSize, addSize)) { ERROR_MSG("Size overflow."); return ARR_ERR_OVER;}
     size_t increasedSize = arr->maxSize + addSize;
 
     void* tmp = realloc(arr->arrayPointer, arr->dataTypeSize*increasedSize);
-    if (tmp == NULL) { ERROR("Unable to realloc."); return ARR_ERR_REALLOC; }
+    if (tmp == NULL) { ERROR_MSG("Unable to realloc."); return ARR_ERR_REALLOC; }
     arr->arrayPointer = tmp;
 
     // NULL new elements
@@ -85,7 +85,7 @@ ARR_ERR_CODE decrease_DA_size(DynamicArray *arr, size_t minusSize)
     size_t decreasedSize = arr->maxSize - minusSize;
 
     void* tmp = realloc(arr->arrayPointer, arr->dataTypeSize*decreasedSize);
-    if (tmp == NULL) { ERROR("Unable to realloc."); return ARR_ERR_REALLOC; }
+    if (tmp == NULL) { ERROR_MSG("Unable to realloc."); return ARR_ERR_REALLOC; }
     arr->arrayPointer = tmp;
 
     arr->maxSize -= minusSize;
@@ -120,7 +120,7 @@ ARR_ERR_CODE set_DA_at(DynamicArray *arr, void* data, size_t index)
 {
     if (index >= arr->maxSize)
     {
-        ERROR("Tried to set index: "TYPE_SIZE_T", when max index is "TYPE_SIZE_T" in DynamicArray.", index, arr->maxSize-1);
+        ERROR_MSG("Tried to set index: "TYPE_SIZE_T", when max index is "TYPE_SIZE_T" in DynamicArray.", index, arr->maxSize-1);
         return ARR_ERR_INDEX;
     }
 
@@ -158,7 +158,7 @@ void* get_DA_ptr_at(DynamicArray *arr, size_t index)
 {
     if (index >= arr->maxSize)
     {
-        ERROR("Tried to get index: "TYPE_SIZE_T", when max index is "TYPE_SIZE_T" in DynamicArray.", index, arr->maxSize-1);
+        ERROR_MSG("Tried to get index: "TYPE_SIZE_T", when max index is "TYPE_SIZE_T" in DynamicArray.", index, arr->maxSize-1);
         return NULL;
     }
     return ARR_PTR_AT(arr->arrayPointer, arr->dataTypeSize, index);
@@ -179,7 +179,7 @@ char is_DA_empty(DynamicArray *arr)
 /* Constructor for DynamicArray */
 DynamicArray* create_DA(void *data, size_t size, size_t dataTypeSize, DA_DATA_TYPE DATA_TYPE)
 {
-    if (size < 1){ ERROR("Tried to create empty dynamic Array!"); }
+    if (size < 1){ ERROR_MSG("Tried to create empty dynamic Array!"); }
     DynamicArray arr;
 
     // Assign array values
@@ -189,7 +189,7 @@ DynamicArray* create_DA(void *data, size_t size, size_t dataTypeSize, DA_DATA_TY
 
     // Alocate space for the array
     arr.arrayPointer = malloc( size*dataTypeSize );
-    if (arr.arrayPointer == NULL) {ERROR("Failed to malloc."); exit(1); }
+    if (arr.arrayPointer == NULL) {ERROR_MSG("Failed to malloc."); exit(1); }
 
     // Copy the array
     for (size_t i=0; i<arr.maxSize; i++)

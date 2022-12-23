@@ -1,9 +1,7 @@
-#include "src/charArray.h"
-#include "src/dynamicArray.h"
-#include "src/List.h"
+#include "test/test.h"
 
 
-void test_CA()
+void example_CA()
 {
     CharArray *arr = create_CA("");
     print_CA_info(arr,"Creation of char array (String).\n");
@@ -44,7 +42,7 @@ void test_CA()
 }
 
 
-void test_DA_char()
+void example_DA_char()
 {
     char chTest[] = "Test array of chars";
     DynamicArray *chArr = create_DA(chTest, strlen(chTest), sizeof *chTest, DA_DATA_CHAR);
@@ -75,7 +73,7 @@ void test_DA_char()
 }
 
 
-void test_DA_int()
+void example_DA_int()
 {
     int intTest[] = {1,2,3,4,5,6};
     DynamicArray *intArr = create_DA(intTest, 6, sizeof *intTest, DA_DATA_INT);
@@ -107,7 +105,7 @@ void test_DA_int()
 }
 
 
-void test_List()
+void example_List()
 {
     List *list = create_list();
 
@@ -118,7 +116,7 @@ void test_List()
     list_append(list, val1, strlenT(val1), "str");
     list_append(list, &val2, sizeof val2, "int");
     list_append(list, val3, strlenT(val3), "str");
-    
+
     char buffor[255];
     sprintf(buffor,"Content of element index 0: %s\n", (char*)list_obj_ptr_at(list, 0));
     print_list_info(list, buffor);
@@ -129,12 +127,12 @@ void test_List()
     sprintf(buffor,"Content of element index 2: %s\n", (char*)list_obj_ptr_at(list, 2));
     print_list_info(list, buffor);
     // END--------------------------------------
-    
+
     // START------------------------------------
     resize_list(list, 10);
     print_list_info(list, "Resize to 10 result.\n");
     // END--------------------------------------
-    
+
     // START------------------------------------
     resize_list(list, 2);
     print_list_info(list, "Resize to 2 result.\n");
@@ -146,12 +144,12 @@ void test_List()
 
 int main()
 {
-    // Uncomment any function you want to test
-    //test_CA();        // Char array tests (String)
-    //test_DA_char();   // Dynamic array tests (char)
-    //test_DA_int();    // Dynamic array tests (int)
-    //test_List();      // List tests
-    
-    DEBUG("WORKS");
+    //example_CA();        // Char array example (String)
+    //example_DA_char();   // Dynamic array example(char)
+    //example_DA_int();    // Dynamic array example (int)
+    //example_List();      // List example
+
+    do_mem_tests();   // UNIT TESTS
+
     return 0;
 }
