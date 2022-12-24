@@ -25,7 +25,7 @@ void test_function(void (*test_function)(size_t), char* testName, size_t repeats
     size_t prevValue = get_ram_usage();
 
     printf("---------------------------------\n");
-    printf("Ram usage test for %s\n\n", testName);
+    printf("Ram usage test for %s, loops: "TYPE_SIZE_T"\n\n", testName, repeats);
     printf("Starting size: "TYPE_SIZE_T" MB, "TYPE_SIZE_T" BYTES\n", prevValue/MB_SIZE, prevValue);
 
     for (unsigned i=0;i<repeats;i++)
@@ -47,17 +47,36 @@ void test_function(void (*test_function)(size_t), char* testName, size_t repeats
 
 void test_CA_mem(size_t size)
 {
-    CharArray *arr = create_CA("");
+    CharArray *arr = create_CA("test");
     resize_CA(arr, size);
+
+    // Random operations on array
+    for (unsigned i=0; i<100; i++)
+    {
+        char *randArr = alloc_random_charArr(10);
+        append_CA(arr, randArr);
+        free(randArr);
+        pop_CA_back(arr);
+    } //
+
     destroy_CA(&arr);
 }
 
 
 void test_DA_mem(size_t size)
 {
-    int intTest[] = {1,2,3,4,5,6}; // Some random init values
-    DynamicArray *arr = create_DA(intTest, 6, sizeof *intTest, DA_DATA_INT);
+    char *charTest = "abcde";
+    DynamicArray *arr = create_DA(charTest, strlen(charTest), sizeof *charTest, DA_DATA_CHAR);
     resize_DA(arr, size);
+
+    // Random operations on array
+    for (unsigned i=0; i<100; i++)
+    {
+        char *randArr = alloc_random_charArr(10);
+        append_DA(arr, randArr, strlen(randArr));
+        free(randArr);
+    } //
+
     destroy_DA(&arr);
 }
 
@@ -66,6 +85,15 @@ void test_list_mem(size_t size)
 {
     List *list = create_list();
     resize_list(list, size);
+
+    // Random operations on list
+    for (unsigned i=0; i<100; i++)
+    {
+        char *randArr = alloc_random_charArr(10);
+        list_append(list, randArr, strlenT(randArr), randArr);
+        free(randArr);
+    } //
+
     destroy_list(&list);
 }
 
@@ -73,8 +101,8 @@ void test_list_mem(size_t size)
 void do_mem_tests()
 {
     printf("\nSTARTING UNIT TESTS\n");
-    test_function(&test_CA_mem, "CharArray", 1000);
-    test_function(&test_DA_mem, "DynamicArray (int)", 1000);
-    test_function(&test_list_mem, "List", 1000);
+    test_function(&test_CA_mem, "CharArray", rand()%1000);
+    test_function(&test_DA_mem, "DynamicArray (int)", rand()%1000);
+    test_function(&test_list_mem, "List", rand()%1000);
     printf("ENDING UNIT TESTS\n\n");
 }

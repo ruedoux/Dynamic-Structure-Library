@@ -144,6 +144,8 @@ void example_List()
 
 int main()
 {
+    srand(time(NULL));
+
     //example_CA();        // Char array example (String)
     //example_DA_char();   // Dynamic array example(char)
     //example_DA_int();    // Dynamic array example (int)

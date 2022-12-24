@@ -87,6 +87,7 @@ ARR_ERR_CODE resize_CA( CharArray *arr, size_t destSize)
 /* Pops last char from array */
 char pop_CA_back( CharArray *arr)
 {
+    if ( !(arr->maxSize > 0) ) { return '\n'; }
     char ch = arr->arrayPointer[arr->maxSize - 1];
     decrease_CA_size(arr, 1);
     return ch;
