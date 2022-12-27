@@ -155,10 +155,10 @@ char get_CA_char( CharArray *arr, size_t index)
 }
 
 
-char is_CA_empty( CharArray *arr)
+bool is_CA_empty( CharArray *arr)
 {
-    char isEmpty = 1;
-    if (arr->maxSize > 0) { isEmpty = 0; }
+    bool isEmpty = true;
+    if (arr->maxSize > 0) { isEmpty = false; }
     return isEmpty;
 }
 

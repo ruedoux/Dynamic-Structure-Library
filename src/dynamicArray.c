@@ -165,10 +165,10 @@ void* get_DA_ptr_at(DynamicArray *arr, size_t index)
 }
 
 
-char is_DA_empty(DynamicArray *arr)
+bool is_DA_empty(DynamicArray *arr)
 {
-    char isEmpty = 1;
-    if (arr->maxSize > 0) { isEmpty = 0; }
+    bool isEmpty = true;
+    if (arr->maxSize > 0) { isEmpty = false; }
     return isEmpty;
 }
 

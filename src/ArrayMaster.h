@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 // ---------------------------------------
 // MACROS
@@ -71,9 +72,9 @@ typedef enum {
 // ---------------------------------------
 
 //checks if minus operation (a-b) on size_t variables will underflow
-int size_t_will_underflow(size_t, size_t);
+bool size_t_will_underflow(size_t, size_t);
 
 //checks if plus operation (a+b) on size_t variables will overflow
-int size_t_will_overflow(size_t, size_t);
+bool size_t_will_overflow(size_t, size_t);
 
 #endif

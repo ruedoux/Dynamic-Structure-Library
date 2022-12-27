@@ -100,9 +100,9 @@ void test_list_mem(size_t size)
 
 void do_mem_tests()
 {
-    printf("\nSTARTING UNIT TESTS\n");
+    printf("\n"); DEBUG_MSG("STARTING UNIT TESTS");
     test_function(&test_CA_mem, "CharArray", rand()%1000);
     test_function(&test_DA_mem, "DynamicArray (int)", rand()%1000);
     test_function(&test_list_mem, "List", rand()%1000);
-    printf("ENDING UNIT TESTS\n\n");
+    DEBUG_MSG("ENDING UNIT TESTS\n\n");
 }

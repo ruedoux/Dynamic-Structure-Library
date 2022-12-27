@@ -57,7 +57,7 @@ void destroy_DA(DynamicArray**);
 void* get_DA_ptr_at(DynamicArray*, size_t);
 
 // Checks if array is empty
-char is_DA_empty(DynamicArray*);
+bool is_DA_empty(DynamicArray*);
 
 // Appends array of the same type to the end of dynamic array
 ARR_ERR_CODE append_DA(DynamicArray*, void*, size_t);

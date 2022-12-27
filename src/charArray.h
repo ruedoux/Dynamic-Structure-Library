@@ -36,7 +36,7 @@ int find_CA_str(CharArray*, char*);
 char get_CA_char(CharArray*, size_t);
 
 // Checks if array is empty
-char is_CA_empty(CharArray*);
+bool is_CA_empty(CharArray*);
 
 // Pops last character from array and returns it
 char pop_CA_back(CharArray*);
