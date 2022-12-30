@@ -62,7 +62,7 @@ ARR_ERR_CODE decrease_CA_size( CharArray *arr, size_t minusSize)
 }
 
 
-ARR_ERR_CODE resize_CA( CharArray *arr, size_t destSize)
+ARR_ERR_CODE resize_CA(CharArray *arr, size_t destSize)
 {
     ARR_ERR_CODE err_result = ARR_ERR_OK;
 
@@ -85,7 +85,7 @@ ARR_ERR_CODE resize_CA( CharArray *arr, size_t destSize)
 // ---------------------------------------
 
 /* Pops last char from array */
-char pop_CA_back( CharArray *arr)
+char pop_CA_back(CharArray *arr)
 {
     if ( !(arr->maxSize > 0) ) { return '\n'; }
     char ch = arr->arrayPointer[arr->maxSize - 1];
@@ -94,7 +94,7 @@ char pop_CA_back( CharArray *arr)
 }
 
 
-ARR_ERR_CODE set_CA_char( CharArray *arr, char ch, size_t index)
+ARR_ERR_CODE set_CA_char(CharArray *arr, char ch, size_t index)
 {
     if (index >= arr->maxSize)
     {
@@ -144,7 +144,7 @@ int find_CA_str(CharArray *arr, char *str)
 }
 
 
-char get_CA_char( CharArray *arr, size_t index)
+char get_CA_char(CharArray *arr, size_t index)
 {
     if (index >= arr->maxSize)
     {
@@ -155,7 +155,7 @@ char get_CA_char( CharArray *arr, size_t index)
 }
 
 
-bool is_CA_empty( CharArray *arr)
+bool is_CA_empty(CharArray *arr)
 {
     bool isEmpty = true;
     if (arr->maxSize > 0) { isEmpty = false; }
@@ -190,7 +190,7 @@ CharArray* create_CA(char *str)
 // DESTRUCTOR
 // ---------------------------------------
 
-void destroy_CA( CharArray **ptrToArr)
+void destroy_CA(CharArray **ptrToArr)
 {
     CharArray *arr = *ptrToArr; //DEBUG_MSG("Destroying charArray: %p", arr);
 

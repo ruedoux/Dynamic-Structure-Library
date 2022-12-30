@@ -46,41 +46,41 @@ typedef struct{
 // ---------------------------------------
 
 // Creates new dynamic array (allocate memory)
-DynamicArray* create_DA(void*, size_t, size_t, DA_DATA_TYPE);
+DynamicArray* create_DA(void *data, size_t size, size_t dataTypeSize, DA_DATA_TYPE DATA_TYPE);
 
 // Deletes dynamic array (free memory)
-void destroy_DA(DynamicArray**);
+void destroy_DA(DynamicArray **ptrToArr);
 
 // Get pointer to object at given index, return NULL if incorrect index
 // To get to value at a pointer cast it to the proper data type, example:
 // int intVal = *(int*)get_DA_ptr_at(arr, 3);
-void* get_DA_ptr_at(DynamicArray*, size_t);
+void* get_DA_ptr_at(DynamicArray *arr, size_t index);
 
 // Checks if array is empty
-bool is_DA_empty(DynamicArray*);
+bool is_DA_empty(DynamicArray *arr);
 
 // Appends array of the same type to the end of dynamic array
-ARR_ERR_CODE append_DA(DynamicArray*, void*, size_t);
+ARR_ERR_CODE append_DA(DynamicArray *arr, void* data, size_t dataSize);
 
 // Sets value of array at given index
-ARR_ERR_CODE set_DA_at(DynamicArray*, void*, size_t);
+ARR_ERR_CODE set_DA_at(DynamicArray *arr, void* data, size_t index);
 
 // Increases maximum size of array
-ARR_ERR_CODE increase_DA_size(DynamicArray*, size_t);
+ARR_ERR_CODE increase_DA_size(DynamicArray *arr, size_t addSize);
 
 // Decreases maximum size of array
-ARR_ERR_CODE decrease_DA_size(DynamicArray*, size_t);
+ARR_ERR_CODE decrease_DA_size(DynamicArray *arr, size_t minusSize);
 
 // Resizes array to a given size
 // All new indexes will be set to NULL
 // All indexes above the new max size will be lost
-ARR_ERR_CODE resize_DA(DynamicArray*, size_t);
+ARR_ERR_CODE resize_DA(DynamicArray *arr, size_t destSize);
 
 // Tries to convert array content into string
 // Returns "err" if unknown data type
-void DA_to_str(char *, DynamicArray *, size_t);
+void DA_to_str(char *buffor, DynamicArray *arr, size_t index);
 
 // Prints information regarding array
-void print_DA_info(DynamicArray*, char*);
+void print_DA_info(DynamicArray *dArr, char *additionalInfo);
 
 #endif

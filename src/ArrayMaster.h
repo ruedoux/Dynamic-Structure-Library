@@ -61,20 +61,20 @@ typedef enum {
 # define BLUE				"\033[34m"
 # define ANSI_RESET			"\033[0m"
 
-//  Example : DEBUG_MSG("MSG") will print : [filename: line_no] MSG \n
+// Example : DEBUG_MSG("MSG") will print : [filename: line_no] MSG \n
 # define DEBUG_MSG(msg,...) fprintf(stderr, BOLD BLUE"[DEBUG](%s:%d) " ANSI_RESET BOLD msg ANSI_RESET"\n" , __FILE__, __LINE__, ##__VA_ARGS__)
 
-//  Example : ERROR_MSG("ERROR_MSG") will print : [filename: line_no] ERROR_MSG \n
+// Example : ERROR_MSG("ERROR_MSG") will print : [filename: line_no] ERROR_MSG \n
 # define ERROR_MSG(msg,...) fprintf(stderr, BOLD RED"[ERROR](%s:%d) " ANSI_RESET BOLD msg ANSI_RESET"\n" , __FILE__, __LINE__, ##__VA_ARGS__)
 
 // ---------------------------------------
 // FUNCTIONS
 // ---------------------------------------
 
-//checks if minus operation (a-b) on size_t variables will underflow
-bool size_t_will_underflow(size_t, size_t);
+// Checks if minus operation (a-b) on size_t variables will underflow
+bool size_t_will_underflow(size_t a, size_t b);
 
-//checks if plus operation (a+b) on size_t variables will overflow
-bool size_t_will_overflow(size_t, size_t);
+// Checks if plus operation (a+b) on size_t variables will overflow
+bool size_t_will_overflow(size_t a, size_t b);
 
 #endif
