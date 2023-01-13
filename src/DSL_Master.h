@@ -53,7 +53,7 @@ typedef enum {
     ARR_ERR_INDEX   = -5,  // Index error
     ARR_ERR_OVER    = -6,  // Overflow error
 
-} ARR_ERR_CODE;
+} DSL_ERR_CODE;
 
 # define BOLD				"\033[1m"
 # define RED				"\033[31m"

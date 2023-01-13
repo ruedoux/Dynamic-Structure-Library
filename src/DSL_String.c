@@ -1,10 +1,10 @@
-#include "charArray.h"
+#include "DSL_String.h"
 
 // ---------------------------------------
 // DEBUG MANAGEMENT
 // ---------------------------------------
 
-void print_CA_info( CharArray *arr, char *additionalInfo)
+void str_print_info( DSL_String *arr, char *additionalInfo)
 {
     printf("---------------------------------\n");
     printf("CHAR ARRAY INFO:\n");
@@ -25,7 +25,7 @@ void print_CA_info( CharArray *arr, char *additionalInfo)
 // SIZE MANAGEMENT
 // ---------------------------------------
 
-ARR_ERR_CODE increase_CA_size( CharArray *arr, size_t addSize)
+DSL_ERR_CODE str_increase_size( DSL_String *arr, size_t addSize)
 {
     // +1 to size so i can put null at the end
     if (size_t_will_overflow(arr->maxSize,addSize)) { ERROR_MSG("Size overflow."); return ARR_ERR_OVER;}
@@ -44,7 +44,7 @@ ARR_ERR_CODE increase_CA_size( CharArray *arr, size_t addSize)
 }
 
 
-ARR_ERR_CODE decrease_CA_size( CharArray *arr, size_t minusSize)
+DSL_ERR_CODE str_decrease_size( DSL_String *arr, size_t minusSize)
 {
     // If decrease more than array size just make array size 0
     if( size_t_will_underflow(arr->maxSize, minusSize) ) { minusSize = arr->maxSize; } // Overflow check
@@ -62,19 +62,19 @@ ARR_ERR_CODE decrease_CA_size( CharArray *arr, size_t minusSize)
 }
 
 
-ARR_ERR_CODE resize_CA(CharArray *arr, size_t destSize)
+DSL_ERR_CODE str_resize(DSL_String *arr, size_t destSize)
 {
-    ARR_ERR_CODE err_result = ARR_ERR_OK;
+    DSL_ERR_CODE err_result = ARR_ERR_OK;
 
     if (destSize > arr->maxSize)
     {
         size_t addSize = destSize - arr->maxSize;
-        err_result = increase_CA_size(arr, addSize);
+        err_result = str_increase_size(arr, addSize);
     }
     else if (destSize < arr->maxSize)
     {
         size_t minusSize = arr->maxSize - destSize;
-        err_result = decrease_CA_size(arr, minusSize);
+        err_result = str_decrease_size(arr, minusSize);
     }
 
     return err_result;
@@ -85,20 +85,20 @@ ARR_ERR_CODE resize_CA(CharArray *arr, size_t destSize)
 // ---------------------------------------
 
 /* Pops last char from array */
-char pop_CA_back(CharArray *arr)
+char str_pop_back(DSL_String *arr)
 {
     if ( !(arr->maxSize > 0) ) { return '\n'; }
     char ch = arr->arrayPointer[arr->maxSize - 1];
-    decrease_CA_size(arr, 1);
+    str_decrease_size(arr, 1);
     return ch;
 }
 
 
-ARR_ERR_CODE set_CA_char(CharArray *arr, char ch, size_t index)
+DSL_ERR_CODE str_set_char(DSL_String *arr, char ch, size_t index)
 {
     if (index >= arr->maxSize)
     {
-        ERROR_MSG("Tried to set index: "TYPE_SIZE_T", when max index is "TYPE_SIZE_T" in CharArray.", index, arr->maxSize-1);
+        ERROR_MSG("Tried to set index: "TYPE_SIZE_T", when max index is "TYPE_SIZE_T" in DSL_String.", index, arr->maxSize-1);
         return ARR_ERR_INDEX;
     }
 
@@ -107,12 +107,12 @@ ARR_ERR_CODE set_CA_char(CharArray *arr, char ch, size_t index)
 }
 
 
-ARR_ERR_CODE append_CA(CharArray *arr, char *str)
+DSL_ERR_CODE str_append(DSL_String *arr, char *str)
 {
-    ARR_ERR_CODE err_result = ARR_ERR_OK;
+    DSL_ERR_CODE err_result = ARR_ERR_OK;
     size_t preIncreaseSize = arr->maxSize;
 
-    err_result = increase_CA_size(arr, strlen(str));
+    err_result = str_increase_size(arr, strlen(str));
     memcpy(arr->arrayPointer + preIncreaseSize, str, strlenT(str));
 
     return err_result;
@@ -122,7 +122,7 @@ ARR_ERR_CODE append_CA(CharArray *arr, char *str)
 // GET FROM ARRAY
 // ---------------------------------------
 
-int find_CA_str(CharArray *arr, char *str)
+int str_find(DSL_String *arr, char *str)
 {
     size_t strSize = strlen(str);
     size_t matchingIndex = 0;
@@ -144,18 +144,18 @@ int find_CA_str(CharArray *arr, char *str)
 }
 
 
-char get_CA_char(CharArray *arr, size_t index)
+char str_get_char(DSL_String *arr, size_t index)
 {
     if (index >= arr->maxSize)
     {
-        ERROR_MSG("Tried to get index: "TYPE_SIZE_T", when max index is "TYPE_SIZE_T" in CharArray.", index, arr->maxSize-1);
+        ERROR_MSG("Tried to get index: "TYPE_SIZE_T", when max index is "TYPE_SIZE_T" in DSL_String.", index, arr->maxSize-1);
         return -1;
     }
     return arr->arrayPointer[index];
 }
 
 
-bool is_CA_empty(CharArray *arr)
+bool str_is_empty(DSL_String *arr)
 {
     bool isEmpty = true;
     if (arr->maxSize > 0) { isEmpty = false; }
@@ -167,9 +167,9 @@ bool is_CA_empty(CharArray *arr)
 // CONSTRUCTOR
 // ---------------------------------------
 
-CharArray* create_CA(char *str)
+DSL_String* str_create(char *str)
 {
-    CharArray charArr;
+    DSL_String charArr;
 
     charArr.maxSize = strlen(str);
 
@@ -179,7 +179,7 @@ CharArray* create_CA(char *str)
     memcpy(charArr.arrayPointer, str, strlenT(str));
 
     // Allocate space for the char array and copy it
-    CharArray *ArrPtr = malloc(sizeof *ArrPtr);  //DEBUG_MSG("Creating charArray: %p", ArrPtr);
+    DSL_String *ArrPtr = malloc(sizeof *ArrPtr);  //DEBUG_MSG("Creating DSL_String: %p", ArrPtr);
     if (ArrPtr == NULL) { return NULL; }
     memcpy(ArrPtr, &charArr, sizeof *ArrPtr);
 
@@ -190,9 +190,9 @@ CharArray* create_CA(char *str)
 // DESTRUCTOR
 // ---------------------------------------
 
-void destroy_CA(CharArray **ptrToArr)
+void str_destroy(DSL_String **ptrToArr)
 {
-    CharArray *arr = *ptrToArr; //DEBUG_MSG("Destroying charArray: %p", arr);
+    DSL_String *arr = *ptrToArr; //DEBUG_MSG("Destroying DSL_String: %p", arr);
 
     free_and_NULL(arr->arrayPointer);
     free_and_NULL(*ptrToArr);

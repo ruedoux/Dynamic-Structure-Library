@@ -46,44 +46,44 @@ void UT_test_func_mem(void (*test_function)(size_t), char* testName, size_t repe
 
 void UT_test_CA_mem(size_t size)
 {
-    CharArray *arr = create_CA("test");
-    resize_CA(arr, size);
+    DSL_String *arr = str_create("test");
+    str_resize(arr, size);
 
     // Random operations on array
     for (unsigned i=0; i<100; i++)
     {
         char *randArr = alloc_random_charArr(10);
-        append_CA(arr, randArr);
+        str_append(arr, randArr);
         free(randArr);
-        pop_CA_back(arr);
+        str_pop_back(arr);
     } //
 
-    destroy_CA(&arr);
+    str_destroy(&arr);
 }
 
 
 void UT_test_DA_mem(size_t size)
 {
     char *charTest = "abcde";
-    DynamicArray *arr = create_DA(charTest, strlen(charTest), sizeof *charTest, DA_DATA_CHAR);
-    resize_DA(arr, size);
+    DynamicArray *arr = da_create(charTest, strlen(charTest), sizeof *charTest, DA_DATA_CHAR);
+    da_resize(arr, size);
 
     // Random operations on array
     for (unsigned i=0; i<100; i++)
     {
         char *randArr = alloc_random_charArr(10);
-        append_DA(arr, randArr, strlen(randArr));
+        da_append(arr, randArr, strlen(randArr));
         free(randArr);
     } //
 
-    destroy_DA(&arr);
+    da_destroy(&arr);
 }
 
 
 void UT_test_list_mem(size_t size)
 {
-    List *list = create_list();
-    resize_list(list, size);
+    DSL_List *list = list_create();
+    list_resize(list, size);
 
     // Random operations on list
     for (unsigned i=0; i<100; i++)
@@ -93,15 +93,15 @@ void UT_test_list_mem(size_t size)
         free(randArr);
     } //
 
-    destroy_list(&list);
+    list_destroy(&list);
 }
 
 
 void UT_do_mem_tests()
 {
     printf("\n"); DEBUG_MSG("STARTING MEMORY TESTS");
-    UT_test_func_mem(&UT_test_CA_mem, "CharArray", rand()%1000);
+    UT_test_func_mem(&UT_test_CA_mem, "DSL_String", rand()%1000);
     UT_test_func_mem(&UT_test_DA_mem, "DynamicArray (int)", rand()%1000);
-    UT_test_func_mem(&UT_test_list_mem, "List", rand()%1000);
+    UT_test_func_mem(&UT_test_list_mem, "DSL_List", rand()%1000);
     DEBUG_MSG("ENDING MEMORY TESTS\n\n");
 }

@@ -1,26 +1,26 @@
-#include "dynamicArray.h"
+#include "DSL_DynamicArray.h"
 
 // ---------------------------------------
 // DEBUG MANAGEMENT
 // ---------------------------------------
 
-void print_DA_info(DynamicArray *dArr, char *additionalInfo)
+void da_print_info(DynamicArray *dArr, char *additionalInfo)
 {
-    CharArray *strArr = create_CA(""); // utilize char array
+    DSL_String *strArr = str_create(""); // utilize char array
 
     if (dArr->DATA_TYPE != DA_DATA_NA)
     {
         char buffor[255];
         for (size_t i=0; i<dArr->maxSize; i++)
         {
-            DA_to_str(buffor, dArr, i);
-            append_CA(strArr, buffor);
-            append_CA(strArr, ", ");
+            da_to_str(buffor, dArr, i);
+            str_append(strArr, buffor);
+            str_append(strArr, ", ");
         }
-        pop_CA_back(strArr); // pop space
-        pop_CA_back(strArr); // pop comma
+        str_pop_back(strArr); // pop space
+        str_pop_back(strArr); // pop comma
 
-    } else {append_CA(strArr, "Unknown data type, Unable to convert to text.");}
+    } else {str_append(strArr, "Unknown data type, Unable to convert to text.");}
 
     printf("---------------------------------\n");
     printf("DYNAMIC ARRAY INFO:\n");
@@ -29,14 +29,14 @@ void print_DA_info(DynamicArray *dArr, char *additionalInfo)
     if (strlen(additionalInfo) != 0) { printf("Additional info: "); printf("%s",additionalInfo); }
     printf("---------------------------------\n");
 
-    destroy_CA(&strArr);
+    str_destroy(&strArr);
 }
 
 // ---------------------------------------
 // STRING CONVERSION
 // ---------------------------------------
 
-void DA_to_str(char *buffor, DynamicArray *arr, size_t index)
+void da_to_str(char *buffor, DynamicArray *arr, size_t index)
 {
     sprintf(buffor,"%s","err");
 
@@ -58,7 +58,7 @@ void DA_to_str(char *buffor, DynamicArray *arr, size_t index)
 // SIZE MANAGEMENT
 // ---------------------------------------
 
-ARR_ERR_CODE increase_DA_size(DynamicArray *arr, size_t addSize)
+DSL_ERR_CODE da_increase_size(DynamicArray *arr, size_t addSize)
 {
     if (size_t_will_overflow(arr->maxSize, addSize)) { ERROR_MSG("Size overflow."); return ARR_ERR_OVER;}
     size_t increasedSize = arr->maxSize + addSize;
@@ -78,7 +78,7 @@ ARR_ERR_CODE increase_DA_size(DynamicArray *arr, size_t addSize)
 }
 
 
-ARR_ERR_CODE decrease_DA_size(DynamicArray *arr, size_t minusSize)
+DSL_ERR_CODE da_decrease_size(DynamicArray *arr, size_t minusSize)
 {
     // If decrease more than array size just make array size 0
     if( size_t_will_underflow(arr->maxSize, minusSize) ) { minusSize = arr->maxSize; } // Overflow check
@@ -94,19 +94,19 @@ ARR_ERR_CODE decrease_DA_size(DynamicArray *arr, size_t minusSize)
 }
 
 
-ARR_ERR_CODE resize_DA(DynamicArray *arr, size_t destSize)
+DSL_ERR_CODE da_resize(DynamicArray *arr, size_t destSize)
 {
-    ARR_ERR_CODE err_result = ARR_ERR_OK;
+    DSL_ERR_CODE err_result = ARR_ERR_OK;
 
     if (destSize > arr->maxSize)
     {
         size_t addSize = destSize - arr->maxSize;
-        err_result = increase_DA_size(arr, addSize);
+        err_result = da_increase_size(arr, addSize);
     }
     else if (destSize < arr->maxSize)
     {
         size_t minusSize = arr->maxSize - destSize;
-        err_result = decrease_DA_size(arr, minusSize);
+        err_result = da_decrease_size(arr, minusSize);
     }
 
     return err_result;
@@ -116,7 +116,7 @@ ARR_ERR_CODE resize_DA(DynamicArray *arr, size_t destSize)
 // CHANGE ARRAY MANAGEMENT
 // ---------------------------------------
 
-ARR_ERR_CODE set_DA_at(DynamicArray *arr, void* data, size_t index)
+DSL_ERR_CODE da_set_at(DynamicArray *arr, void* data, size_t index)
 {
     if (index >= arr->maxSize)
     {
@@ -131,13 +131,13 @@ ARR_ERR_CODE set_DA_at(DynamicArray *arr, void* data, size_t index)
 }
 
 
-ARR_ERR_CODE append_DA(DynamicArray *arr, void* data, size_t dataSize)
+DSL_ERR_CODE da_append(DynamicArray *arr, void* data, size_t dataSize)
 {
-    ARR_ERR_CODE err_result = ARR_ERR_OK;
+    DSL_ERR_CODE err_result = ARR_ERR_OK;
     size_t oldMaxSize = arr->maxSize;
 
     // Increase the max size
-    err_result = increase_DA_size(arr, dataSize);
+    err_result = da_increase_size(arr, dataSize);
 
     // Copy the array
     for (size_t i=0; i<dataSize; i++)
@@ -154,7 +154,7 @@ ARR_ERR_CODE append_DA(DynamicArray *arr, void* data, size_t dataSize)
 // GET FROM ARRAY
 // ---------------------------------------
 
-void* get_DA_ptr_at(DynamicArray *arr, size_t index)
+void* da_get_ptr_at(DynamicArray *arr, size_t index)
 {
     if (index >= arr->maxSize)
     {
@@ -165,7 +165,7 @@ void* get_DA_ptr_at(DynamicArray *arr, size_t index)
 }
 
 
-bool is_DA_empty(DynamicArray *arr)
+bool da_is_empty(DynamicArray *arr)
 {
     bool isEmpty = true;
     if (arr->maxSize > 0) { isEmpty = false; }
@@ -177,7 +177,7 @@ bool is_DA_empty(DynamicArray *arr)
 // ---------------------------------------
 
 /* Constructor for DynamicArray */
-DynamicArray* create_DA(void *data, size_t size, size_t dataTypeSize, DA_DATA_TYPE DATA_TYPE)
+DynamicArray* da_create(void *data, size_t size, size_t dataTypeSize, DA_DATA_TYPE DATA_TYPE)
 {
     if (size < 1){ ERROR_MSG("Tried to create empty dynamic Array!"); }
     DynamicArray arr;
@@ -210,9 +210,9 @@ DynamicArray* create_DA(void *data, size_t size, size_t dataTypeSize, DA_DATA_TY
 // DESTRUCTOR
 // ---------------------------------------
 
-void destroy_DA(DynamicArray **ptrToArr)
+void da_destroy(DynamicArray **ptrToArr)
 {
-    DynamicArray *arr = *ptrToArr; //DEBUG("Destroying charArray: %p", arr);
+    DynamicArray *arr = *ptrToArr; //DEBUG("Destroying DSL_String: %p", arr);
 
     free_and_NULL(arr->arrayPointer);
     free_and_NULL(*ptrToArr);

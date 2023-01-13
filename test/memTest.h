@@ -23,9 +23,9 @@
 // TESTED LIBS
 // ---------------------------------------
 
-#include "../src/charArray.h"
-#include "../src/dynamicArray.h"
-#include "../src/List.h"
+#include "../src/DSL_String.h"
+#include "../src/DSL_DynamicArray.h"
+#include "../src/DSL_List.h"
 
 // ---------------------------------------
 // MACROS
@@ -43,13 +43,13 @@ void UT_do_mem_tests();
 // Test a given function in a loop
 void UT_test_func_mem(void (*test_function)(size_t), char* testName, size_t repeats);
 
-// Generates CharArray of given size and destroys it
+// Generates DSL_String of given size and destroys it
 void UT_test_CA_mem(size_t size);
 
 // Generates DynamicArray of given size and destroys it
 void UT_test_DA_mem(size_t size);
 
-// Generates List of given size and destroys it
+// Generates DSL_List of given size and destroys it
 void UT_test_list_mem(size_t size);
 
 #endif
