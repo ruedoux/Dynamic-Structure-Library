@@ -1,9 +1,9 @@
-C Dynamic Array
+DSL - Dynamic Structure Library
 =========
 
 About
 -----
-Simple implementation of dynamic arrays in C
+Simple implementation of dynamic structures in C
 
 Example Use
 -----------
@@ -48,7 +48,7 @@ list_append(list, val3, strlenT(val3), "str");
 list_destroy(&list);
 ```
 
-Example usage is also provided in master.c file.
+Example usage is also provided in main.c file.
 
 For functions and documentation check .h files in src directory.
 
