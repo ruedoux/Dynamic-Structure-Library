@@ -4,8 +4,8 @@
 */
 
 #pragma once
-#ifndef ARRTEST_C
-#define ARRTEST_C
+#ifndef MEMTEST_C
+#define MEMTEST_C
 
 // ---------------------------------------
 // UNIT TEST LIBS
@@ -38,18 +38,18 @@
 // ---------------------------------------
 
 // Perform all unit tests
-void do_mem_tests();
+void UT_do_mem_tests();
 
 // Test a given function in a loop
-void test_function(void (*test_function)(size_t), char* testName, size_t repeats);
+void UT_test_func_mem(void (*test_function)(size_t), char* testName, size_t repeats);
 
 // Generates CharArray of given size and destroys it
-void test_CA_mem(size_t size);
+void UT_test_CA_mem(size_t size);
 
 // Generates DynamicArray of given size and destroys it
-void test_DA_mem(size_t size);
+void UT_test_DA_mem(size_t size);
 
 // Generates List of given size and destroys it
-void test_list_mem(size_t size);
+void UT_test_list_mem(size_t size);
 
 #endif

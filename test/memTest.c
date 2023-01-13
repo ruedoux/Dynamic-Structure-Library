@@ -1,5 +1,4 @@
-#include "test.h"
-
+#include "memTest.h"
 
 #ifdef _WIN32
 size_t get_ram_usage()
@@ -19,7 +18,7 @@ size_t get_ram_usage()
 #endif
 
 
-void test_function(void (*test_function)(size_t), char* testName, size_t repeats)
+void UT_test_func_mem(void (*test_function)(size_t), char* testName, size_t repeats)
 {
     const size_t ALLOCATE_SIZE = MB_SIZE; // Memory to allocate in a loop
     size_t prevValue = get_ram_usage();
@@ -45,7 +44,7 @@ void test_function(void (*test_function)(size_t), char* testName, size_t repeats
 }
 
 
-void test_CA_mem(size_t size)
+void UT_test_CA_mem(size_t size)
 {
     CharArray *arr = create_CA("test");
     resize_CA(arr, size);
@@ -63,7 +62,7 @@ void test_CA_mem(size_t size)
 }
 
 
-void test_DA_mem(size_t size)
+void UT_test_DA_mem(size_t size)
 {
     char *charTest = "abcde";
     DynamicArray *arr = create_DA(charTest, strlen(charTest), sizeof *charTest, DA_DATA_CHAR);
@@ -81,7 +80,7 @@ void test_DA_mem(size_t size)
 }
 
 
-void test_list_mem(size_t size)
+void UT_test_list_mem(size_t size)
 {
     List *list = create_list();
     resize_list(list, size);
@@ -98,11 +97,11 @@ void test_list_mem(size_t size)
 }
 
 
-void do_mem_tests()
+void UT_do_mem_tests()
 {
-    printf("\n"); DEBUG_MSG("STARTING UNIT TESTS");
-    test_function(&test_CA_mem, "CharArray", rand()%1000);
-    test_function(&test_DA_mem, "DynamicArray (int)", rand()%1000);
-    test_function(&test_list_mem, "List", rand()%1000);
-    DEBUG_MSG("ENDING UNIT TESTS\n\n");
+    printf("\n"); DEBUG_MSG("STARTING MEMORY TESTS");
+    UT_test_func_mem(&UT_test_CA_mem, "CharArray", rand()%1000);
+    UT_test_func_mem(&UT_test_DA_mem, "DynamicArray (int)", rand()%1000);
+    UT_test_func_mem(&UT_test_list_mem, "List", rand()%1000);
+    DEBUG_MSG("ENDING MEMORY TESTS\n\n");
 }

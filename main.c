@@ -1,4 +1,4 @@
-#include "test/test.h"
+#include "test/unitTest.h"
 
 
 void example_CA()
@@ -151,7 +151,7 @@ int main()
     //example_DA_int();    // Dynamic array example (int)
     //example_List();      // List example
 
-    do_mem_tests();   // UNIT TESTS
-
+    UT_run_all();   // UNIT TESTS
+    
     return 0;
 }
