@@ -12,8 +12,8 @@
 */
 
 #pragma once
-#ifndef LIST_C
-#define LIST_C
+#ifndef DSL_LIST_C
+#define DSL_LIST_C
 
 #include "DSL_Master.h"
 

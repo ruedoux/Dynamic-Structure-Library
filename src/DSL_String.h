@@ -7,8 +7,8 @@
 */
 
 #pragma once
-#ifndef DSLSTR_C
-#define DSLSTR_C
+#ifndef DSL_STR_C
+#define DSL_STR_C
 
 #include "DSL_Master.h"
 

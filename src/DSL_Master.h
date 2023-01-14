@@ -1,6 +1,6 @@
 #pragma once
-#ifndef ARRMASTER_C
-#define ARRMASTER_C
+#ifndef ARR_MASTER_C
+#define ARR_MASTER_C
 
 #define _CRT_SECURE_NO_WARNINGS // VS
 

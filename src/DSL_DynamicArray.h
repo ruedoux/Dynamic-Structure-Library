@@ -7,8 +7,8 @@
 */
 
 #pragma once
-#ifndef DYNAMICARR_C
-#define DYNAMICARR_C
+#ifndef DSL_DYNAMIC_ARR_C
+#define DSL_DYNAMIC_ARR_C
 
 #include "DSL_Master.h"
 #include "DSL_String.h"
