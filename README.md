@@ -51,7 +51,3 @@ list_destroy(&list);
 Example usage is also provided in main.c file.
 
 For functions and documentation check .h files in src directory.
-
-Unit tests
------------
-Some tests are provided in test directory, mainly checking for any memory leaks in implementation.
