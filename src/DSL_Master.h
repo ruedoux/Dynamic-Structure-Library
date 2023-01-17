@@ -62,7 +62,7 @@ typedef enum {
 # define ANSI_RESET			"\033[0m"
 
 // Example : DEBUG_MSG("MSG") will print : [filename: line_no] MSG \n
-# define DEBUG_MSG(msg,...) fprintf(stderr, BOLD BLUE"[DEBUG](%s:%d) " ANSI_RESET BOLD msg ANSI_RESET"\n" , __FILE__, __LINE__, ##__VA_ARGS__)
+# define DEBUG_MSG(msg,...) fprintf(stdout, BOLD BLUE"[DEBUG](%s:%d) " ANSI_RESET BOLD msg ANSI_RESET"\n" , __FILE__, __LINE__, ##__VA_ARGS__)
 
 // Example : ERROR_MSG("ERROR_MSG") will print : [filename: line_no] ERROR_MSG \n
 # define ERROR_MSG(msg,...) fprintf(stderr, BOLD RED"[ERROR](%s:%d) " ANSI_RESET BOLD msg ANSI_RESET"\n" , __FILE__, __LINE__, ##__VA_ARGS__)
