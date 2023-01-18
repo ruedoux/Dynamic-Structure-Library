@@ -23,7 +23,13 @@ all: main_build
 
 # Build test
 main_build: pre_build
+ifeq ($(OS), Windows_NT)
+# Windows
 	$(CC) $(FLAGS) $(SRC) $(OUT_FILE) $(LINK)
+else
+# Linux
+	$(CC) $(FLAGS) $(SRC) $(OUT_FILE)
+endif
 
 
 # Check if build folders exist before building
