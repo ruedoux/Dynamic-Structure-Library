@@ -55,6 +55,7 @@ For functions and documentation check .h files in src directory.
 Building
 -----------
 Building requires MinGW (make and gcc)
+TODO: Memory leak unit tests are only working on windows 
 
 Building unit tests:
 > make -f tests.mk
