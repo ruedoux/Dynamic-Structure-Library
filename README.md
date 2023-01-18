@@ -9,7 +9,7 @@ Example Use
 -----------
 Char array (String):
 ```
-DSL_String *arr = str_create("");         // Create array struct (allocate memory)
+DSL_String *arr = str_create("");        // Create array struct (allocate memory)
 str_append(arr, "append this text");     // Append text to array
 str_resize(arr, 5);                      // Resize the array to size 5
 str_destroy(&arr);                       // Destroy array struct (free memory)
@@ -51,3 +51,13 @@ list_destroy(&list);
 Example usage is also provided in main.c file.
 
 For functions and documentation check .h files in src directory.
+
+Building
+-----------
+Building requires MinGW (make and gcc)
+
+Building unit tests:
+> make -f tests.mk
+
+Building static library:
+> make -f lib.mk
