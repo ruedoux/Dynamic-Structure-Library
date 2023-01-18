@@ -47,5 +47,6 @@ ifeq ($(OS), Windows_NT)
 else
 # Linux
 	if ! [ -d "build" ]; then mkdir build; fi
-	if ! [ -d "build\include" ]; then mkdir build\include; fi
+	if ! [ -d "build/include" ]; then mkdir "build/include"; fi
+	cp src/*h build/include
 endif
