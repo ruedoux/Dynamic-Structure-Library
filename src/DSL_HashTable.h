@@ -1,7 +1,8 @@
 #pragma once
-#define DSL_DICT
-#ifndef DSL_DICT
+#define DSL_HASH
+#ifndef DSL_HASH
 
 #include "DSL_Master.h"
+
 
 #endif

@@ -50,7 +50,7 @@ void example_CA()
 void example_DA_char()
 {
     char chTest[] = "Test array of chars";
-    DynamicArray *chArr = da_create(chTest, strlen(chTest), sizeof *chTest, DA_DATA_CHAR);
+    DynamicArray *chArr = da_create(chTest, strlen(chTest), sizeof *chTest, DA_DATA_I8);
     da_print_info(chArr,"Creating dynamic array.\n");
 
     // START------------------------------------
@@ -81,7 +81,7 @@ void example_DA_char()
 void example_DA_int()
 {
     int intTest[] = {1,2,3,4,5,6};
-    DynamicArray *intArr = da_create(intTest, 6, sizeof *intTest, DA_DATA_INT);
+    DynamicArray *intArr = da_create(intTest, 6, sizeof *intTest, DA_DATA_I32);
     da_print_info(intArr,"Creation of dynamic array.\n");
 
     // START------------------------------------

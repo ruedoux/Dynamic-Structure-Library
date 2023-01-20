@@ -19,17 +19,12 @@
 // in array print function.
 typedef enum {
     DA_DATA_NA,
-    DA_DATA_UCHAR,
-    DA_DATA_CHAR,
-    DA_DATA_USHORT,
-    DA_DATA_SHORT,
-    DA_DATA_UINT,
-    DA_DATA_INT,
-    DA_DATA_ULLI,
-    DA_DATA_LLI,
-    DA_DATA_FLOAT,
-    DA_DATA_DOUBLE,
-    DA_DATA_LDOUBLE,
+    DA_DATA_U8,
+    DA_DATA_I8,
+    DA_DATA_U16,
+    DA_DATA_I16,
+    DA_DATA_U32,
+    DA_DATA_I32,
 } DA_DATA_TYPE;
 
 
@@ -53,7 +48,7 @@ void da_destroy(DynamicArray **ptrToArr);
 
 // Get pointer to object at given index, return NULL if incorrect index
 // To get to value at a pointer cast it to the proper data type, example:
-// int intVal = *(int*)da_get_ptr_at(arr, 3);
+// i32 intVal = *(i32*)da_get_ptr_at(arr, 3);
 void* da_get_ptr_at(DynamicArray *arr, size_t index);
 
 // Checks if array is empty

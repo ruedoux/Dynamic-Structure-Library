@@ -122,11 +122,11 @@ DSL_ERR_CODE str_append(DSL_String *arr, char *str)
 // GET FROM ARRAY
 // ---------------------------------------
 
-int str_find(DSL_String *arr, char *str)
+i32 str_find(DSL_String *arr, char *str)
 {
     size_t strSize = strlen(str);
     size_t matchingIndex = 0;
-    int foundIndex = -1;
+    i32 foundIndex = -1;
 
     for (size_t i=0; i<arr->maxSize; i++)
     {

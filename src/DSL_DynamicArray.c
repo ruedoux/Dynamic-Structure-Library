@@ -40,18 +40,18 @@ void da_to_str(char *buffor, DynamicArray *arr, size_t index)
 {
     sprintf(buffor,"%s","err");
 
-    if (arr->DATA_TYPE == DA_DATA_UCHAR)
-    { sprintf(buffor,"%c", *(unsigned char*)ARR_PTR_AT(arr->arrayPointer, arr->dataTypeSize, index)); }
-    else if (arr->DATA_TYPE == DA_DATA_CHAR)
-    { sprintf(buffor,"%c", *(char*)ARR_PTR_AT(arr->arrayPointer, arr->dataTypeSize, index)); }
-    else if (arr->DATA_TYPE == DA_DATA_UINT)
-    { sprintf(buffor,"%u", *(unsigned int*)ARR_PTR_AT(arr->arrayPointer, arr->dataTypeSize, index)); }
-    else if (arr->DATA_TYPE == DA_DATA_INT)
-    { sprintf(buffor,"%d", *(int*)ARR_PTR_AT(arr->arrayPointer, arr->dataTypeSize, index)); }
-    else if (arr->DATA_TYPE == DA_DATA_USHORT)
-    { sprintf(buffor,"%hu", *(unsigned short*)ARR_PTR_AT(arr->arrayPointer, arr->dataTypeSize, index)); }
-    else if (arr->DATA_TYPE == DA_DATA_SHORT)
-    { sprintf(buffor,"%hd", *(short*)ARR_PTR_AT(arr->arrayPointer, arr->dataTypeSize, index)); }
+    if (arr->DATA_TYPE == DA_DATA_U8)
+    { sprintf(buffor,"%c", *(u8*)ARR_PTR_AT(arr->arrayPointer, arr->dataTypeSize, index)); }
+    else if (arr->DATA_TYPE == DA_DATA_I8)
+    { sprintf(buffor,"%c", *(i8*)ARR_PTR_AT(arr->arrayPointer, arr->dataTypeSize, index)); }
+    else if (arr->DATA_TYPE == DA_DATA_U32)
+    { sprintf(buffor,"%u", *(u32*)ARR_PTR_AT(arr->arrayPointer, arr->dataTypeSize, index)); }
+    else if (arr->DATA_TYPE == DA_DATA_I32)
+    { sprintf(buffor,"%d", *(i32*)ARR_PTR_AT(arr->arrayPointer, arr->dataTypeSize, index)); }
+    else if (arr->DATA_TYPE == DA_DATA_U16)
+    { sprintf(buffor,"%hu", *(u16*)ARR_PTR_AT(arr->arrayPointer, arr->dataTypeSize, index)); }
+    else if (arr->DATA_TYPE == DA_DATA_I16)
+    { sprintf(buffor,"%hd", *(i16*)ARR_PTR_AT(arr->arrayPointer, arr->dataTypeSize, index)); }
 }
 
 // ---------------------------------------

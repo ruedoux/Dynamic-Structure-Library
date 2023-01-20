@@ -13,6 +13,8 @@
 #include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <inttypes.h>
+#include <stddef.h>
 
 // ---------------------------------------
 // MACROS
@@ -66,6 +68,24 @@ typedef enum {
 
 // Example : ERROR_MSG("ERROR_MSG") will print : [filename: line_no] ERROR_MSG \n
 # define ERROR_MSG(msg,...) fprintf(stderr, BOLD RED"[ERROR](%s:%d) " ANSI_RESET BOLD msg ANSI_RESET"\n" , __FILE__, __LINE__, ##__VA_ARGS__)
+
+// ---------------------------------------
+// TYPEDEF OF DATATYPES (rust style)
+// ---------------------------------------
+
+// Using this format for numbers to avoid confusion and ambiguity, size_t remains the same
+typedef uint8_t  u8;
+typedef uint16_t u16;
+typedef uint32_t u32;
+typedef uint64_t u64;
+
+typedef int8_t  i8;
+typedef int16_t i16;
+typedef int32_t i32;
+typedef int64_t i64;
+
+typedef float  f32;
+typedef double f64;
 
 // ---------------------------------------
 // FUNCTIONS

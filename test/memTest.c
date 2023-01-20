@@ -65,7 +65,7 @@ void UT_test_CA_mem(size_t size)
 void UT_test_DA_mem(size_t size)
 {
     char *charTest = "abcde";
-    DynamicArray *arr = da_create(charTest, strlen(charTest), sizeof *charTest, DA_DATA_CHAR);
+    DynamicArray *arr = da_create(charTest, strlen(charTest), sizeof *charTest, DA_DATA_I8);
     da_resize(arr, size);
 
     // Random operations on array
@@ -101,7 +101,7 @@ void UT_do_mem_tests()
 {
     printf("\n"); DEBUG_MSG("STARTING MEMORY TESTS");
     UT_test_func_mem(&UT_test_CA_mem, "DSL_String", rand()%1000);
-    UT_test_func_mem(&UT_test_DA_mem, "DynamicArray (int)", rand()%1000);
+    UT_test_func_mem(&UT_test_DA_mem, "DynamicArray (i32)", rand()%1000);
     UT_test_func_mem(&UT_test_list_mem, "DSL_List", rand()%1000);
     DEBUG_MSG("ENDING MEMORY TESTS\n\n");
 }

@@ -67,7 +67,7 @@ DSL_ListElement* list_get_element_ptr(DSL_List* list, size_t index);
 
 // Returns pointer to object inside of element on a given index
 // To get to value at a pointer cast it to the proper data type, example:
-// int intVal = *(int*)list_obj_ptr_at(list, 3);
+// i32 intVal = *(i32*)list_obj_ptr_at(list, 3);
 void* list_obj_ptr_at(DSL_List *list, size_t index);
 
 // Prints information regarding list

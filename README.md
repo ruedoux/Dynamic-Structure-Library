@@ -21,7 +21,7 @@ int intTest[] = {1,2,3,4,5,6};
 int appendValues[] = {8,9};
 
 // Create dynamic array from above fixed size array (allocate memory)
-DynamicArray *intArr = da_create(intTest, 6, sizeof *intTest, DA_DATA_INT);
+DynamicArray *intArr = da_create(intTest, 6, sizeof *intTest, DA_DATA_I32);
 
 // Append values to dynamic array
 da_append(intArr, appendValues, 2);

@@ -30,7 +30,7 @@ void str_destroy(DSL_String **ptrToArr);
 
 // Finds string in array, returns starting index of first find
 // Returns -1 if none was found
-int str_find(DSL_String *arr, char *str);
+i32 str_find(DSL_String *arr, char *str);
 
 // Returns char on given index
 char str_get_char(DSL_String *arr, size_t index);
