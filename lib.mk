@@ -11,7 +11,7 @@
 
 FLAGS=-Wall -Wextra -g3 -O -Werror -c
 LINK=-lpsapi
-SRC=../*.c ../src/*.c ../test/*c
+SRC=../src/*.c
 
 # ----------------------------------------------------
 # BUILD
